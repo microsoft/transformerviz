@@ -1,0 +1,15 @@
+{
+    "compilerOptions": {
+        "outDir": "./dist/",
+        "sourceMap": true,
+        "noImplicitAny": false,
+        "module": "commonjs",
+        "esModuleInterop": true,
+        "target": "es6",
+        "jsx": "react",
+        "baseUrl": ".",
+        "paths": {
+            "@App/*": ["widgets/*"]
+        }
+    }
+}

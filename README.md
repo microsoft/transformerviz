@@ -31,3 +31,19 @@ trademarks or logos is subject to and must follow
 [Microsoft's Trademark & Brand Guidelines](https://www.microsoft.com/en-us/legal/intellectualproperty/trademarks/usage/general).
 Use of Microsoft trademarks or logos in modified versions of this project must not cause confusion or imply Microsoft sponsorship.
 Any use of third-party trademarks or logos are subject to those third-party's policies.
+
+
+## Development Environment Setup
+
+- `pip install pip upgrade`
+- `pip install -r requirements.txt --cache-dir <path-to-pip-cache-dir>` (The `cache-dir` parameter is optional).
+- `pip install -e .`
+- `npm install`
+- `npm run build`
+
+
+## Running
+
+- `PERSPECTIVE_API_KEY=<perspective-api-key> TRANSFORMERS_CACHE=<path-to-transformers-cache> FLASK_APP=transformerviz/server.py flask run --host 0.0.0.0 --port 5000` (The `TRANSFORMERS_CACHE` environment variable is optional).
+- Point your browser to port 5000 of the server on which the app is running.
+
