@@ -1,0 +1,24 @@
+<html>
+<head>
+    <style>
+        {{ app_css }}
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div id="app">
+        </div>
+        <script>
+            window.APP_STATE = {
+                text_generation_results: [],
+                error: null,
+                loading: false
+            };
+
+            {{ app_javascript }}
+        </script>
+    </div>
+</body>
+
+</html>
