@@ -1,31 +1,47 @@
+html {
+  height: 100%;
+}
+
+body {
+  min-height: 100%;
+}
+
 .button {
   position: relative;
   display: inline-block;
 }
 
+.container {
+  display: grid;
+  grid-template-columns: 1fr 3fr;
+  grid-template-rows: 1fr;
+  padding-left: 24px;
+  padding-right: 24px;
+  padding-top: 36px;
+  padding-bottom: 36px;
+  background-color: #F3F6FD;
+}
+
 .text-result {
-    minHeight: 54;
-    padding: 10;
-    boxSizing: "border-box";
-    borderBottom: "1px solid gray";
-    display: "flex";
+  padding: 10px;
+  background-color: #F3F6FD;
 }
 
 .text-result-content {
-    marginLeft: 10;
-    overflow: "hidden";
-    flexGrow: 1;
+  margin-left: 10px;
+  overflow: hidden;
+  flex-grow: 1;
 }
 
 .text-result-content-score {
-    marginLeft: 10;
-    overflow: "hidden";
-    flexGrow: 1;
+  margin-left: 10px;
+  overflow: hidden;
+  flex-grow: 1;
 }
 
 .text-result-content-generated-text {
-    marginLeft: 10;
-    overflow: "hidden";
-    flexGrow: 1;
-    font-style: bold;
+  margin-left: 10px;
+  overflow: hidden;
+  flex-grow: 1;
+  font-style: bold;
 }

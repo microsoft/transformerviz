@@ -1,10 +1,12 @@
 import axios from 'axios';
 
-var port = null;
+var apiServiceEnvironment = window["API_SERVICE_ENVIRONMENT"];
+var port = apiServiceEnvironment.port;
 
+/*
 if (window.location.port != "") {
   port = window.location.port;
-}
+}*/
 
 var apiBaseUrl = `${window.location.protocol}//${window.location.hostname}:${port}`;
 

@@ -22,10 +22,10 @@ module.exports = {
     new MiniCssExtractPlugin({
       filename: 'app.css'
     }),
-    // isDevelopment && new HtmlWebpackPlugin({
-    //   template: './development/compatibility-analysis/index.html'
-    // }),
-    // isDevelopment && new ReactRefreshPlugin()
+    isDevelopment && new HtmlWebpackPlugin({
+      template: './development/index.html'
+    }),
+    isDevelopment && new ReactRefreshPlugin()
   ].filter(Boolean),
   module: {
     rules: [
@@ -59,16 +59,16 @@ module.exports = {
     ]
   },
   resolve: {
-    extensions: ['*', '.js', '.jsx', '*.ts', '*.tsx']
+    extensions: ['*', '.ts', '.tsx', '.js', '.jsx']
   },
   output: {
     path: path.resolve(__dirname, 'transformerviz/assets'),
     publicPath: '/',
     filename: 'app-build.js'
   },
-  // devServer: {
-  //   contentBase: path.resolve(__dirname, "development"),
-  //   port: 3000
-  // }
+  devServer: {
+    contentBase: path.resolve(__dirname, "development"),
+    port: 3000
+  }
 };
 

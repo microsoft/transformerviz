@@ -1,4 +1,4 @@
-import { makeGetCall, makePostCall } from "./api.ts";
+import { makeGetCall, makePostCall } from "./api";
 
 
 function requestGenerateText() {
