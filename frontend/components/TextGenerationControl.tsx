@@ -125,13 +125,15 @@ class TextGenerationControl extends React.Component<
             padding: "24px",
             border: "1px solid #E7E7E7",
             borderRadius: "4px",
-            boxShadow: "0px 2px 12px rgba(0, 0, 0, 0.12)"
+            boxShadow: "0px 2px 12px rgba(0, 0, 0, 0.12)",
+            marginBottom: "30px"
         }}
       >
         <div className="flex items-end mb-4">
           <TextField
             className="flex-initial w-11/12 mr-4"
             label="Text Generation Prompt"
+            placeholder="Input your prompt"
             name="prompt"
             value={this.state.textGenerationPrompt}
             onChange={this.onTextPromptChange}
