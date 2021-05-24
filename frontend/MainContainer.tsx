@@ -23,7 +23,7 @@ function Container({
   }) {
 
     return (
-      <div className="container">
+      <div className="m-4">
         <TextGenerationControl generateText={generateText} />
         <TextGenerationResults generatedResults={text_generation_results} loading={loading} error={error} />
       </div>

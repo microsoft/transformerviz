@@ -9,6 +9,7 @@ import thunkMiddleware from 'redux-thunk';
 import { initializeIcons } from 'office-ui-fabric-react/lib/Icons';
 
 import "./app.css";
+import "./tailwind.css";
 
 const loggerMiddleware = createLogger()
 const store = createStore(rootReducer, applyMiddleware(thunkMiddleware, loggerMiddleware));
