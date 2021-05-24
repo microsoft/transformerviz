@@ -7,9 +7,9 @@ import {
   setGeneratedTextResults,
   generateTextFailed,
   generateText
-} from './actions.ts';
-import TextGenerationControl from "./components/TextGenerationControl.tsx";
-import TextGenerationResults from "./components/TextGenerationResults.tsx";
+} from './actions';
+import TextGenerationControl from "./components/TextGenerationControl";
+import TextGenerationResults from "./components/TextGenerationResults";
 
 
 function Container({

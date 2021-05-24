@@ -1,7 +1,6 @@
 <html>
 <head>
     <style>
-        {{ app_css }}
     </style>
 </head>
 
@@ -10,14 +9,11 @@
     </div>
     <script>
         window.API_SERVICE_ENVIRONMENT = { port: 5000 };
-
         window.APP_STATE = {
             text_generation_results: [],
             error: null,
             loading: false
         };
-
-        {{ app_javascript }}
     </script>
 </body>
 

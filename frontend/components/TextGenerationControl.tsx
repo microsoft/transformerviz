@@ -113,15 +113,15 @@ class TextGenerationControl extends React.Component<TextGenerationControlProps, 
   render() {
 
     return (
-      <Fabric styles={{root: {width: 700}}}>
+      <Fabric styles={{root: {width: "410px", backgroundColor: "white", padding: "24px", border: "1px solid #E7E7E7", borderRadius: "4px"}}}>
         <TextField
           label="Text Generation Prompt"
           name="prompt"
           value={this.state.textGenerationPrompt}
           onChange={this.onTextPromptChange}
         />
-        <Stack>
-          <Checkbox label="Sample" onChange={this.onSampleChange} />
+        <Stack styles={{root: {marginTop: "24px", marginBottom: "20px"}}}>
+          <Checkbox label="Sample" onChange={this.onSampleChange} styles={{root: {paddingBottom: "16px"}}} />
           <Checkbox label="Early Stopping" onChange={this.onEarlyStoppingChange} />
         </Stack>
         <Stack>

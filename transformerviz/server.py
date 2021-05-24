@@ -3,12 +3,13 @@ from jinja2 import Template
 from flask import (
     Flask,
     request)
+from flask_cors import CORS
 from transformerviz.helpers import utils
 import os
 
 
 app = Flask(__name__)
-
+CORS(app)
 
 text_generators = {
     "gpt2": utils.TextGenerator("gpt2")
