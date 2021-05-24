@@ -1,5 +1,4 @@
-import React from "react";
-import ReactDOM from "react-dom";
+import React, { useState } from "react";
 import { bindActionCreators } from "redux";
 import { connect } from 'react-redux';
 import {
@@ -10,29 +9,63 @@ import {
 } from './actions';
 import TextGenerationControl from "./components/TextGenerationControl";
 import TextGenerationResults from "./components/TextGenerationResults";
+import TextDetailedAnalysis from "./components/TextDetailedAnalysis";
+import AnalyzedText from "./models/AnalyzedText";
 
+type ContainerProps = {
+  analysisResults: AnalyzedText[],
+  error: any,
+  loading: any,
+  requestGenerateText: Function,
+  setGeneratedTextResults: Function,
+  generateTextFailed: any,
+  generateText: any
+}
 
-function Container({
-  text_generation_results,
+const Container: React.FunctionComponent<ContainerProps> = ({
+  analysisResults,
   error,
   loading,
   requestGenerateText,
   setGeneratedTextResults,
   generateTextFailed,
   generateText
-  }) {
+  }) => {
+    const [selectedTextIds, setSelectedTextIds] = useState(new Array<number>());
+    console.log("Container state: ", selectedTextIds)
+
+    const onSelectTextId = (id: number) => {
+      if (selectedTextIds.includes(id)) {
+        console.log(`Deselecting ${id}`)
+        // Deselect
+        setSelectedTextIds(selectedTextIds.filter(item => item != id));
+      } else {
+        console.log(`Selecting ${id}`)
+        // Add to selected ids
+        setSelectedTextIds([...selectedTextIds, id]);
+      }
+    }
 
     return (
-      <div className="container">
+      <div className="m-4 font-sans">
         <TextGenerationControl generateText={generateText} />
-        <TextGenerationResults generatedResults={text_generation_results} loading={loading} error={error} />
+        <div className="grid grid-cols-2 gap-4">
+          <TextGenerationResults 
+            analysisResults={analysisResults}
+            loading={loading}
+            error={error}
+            onSelectTextId={onSelectTextId}
+            selectedTextIds={selectedTextIds} />
+          <TextDetailedAnalysis
+            selectedText={analysisResults.filter(item => selectedTextIds.includes(item.id))} />
+        </div>
       </div>
     );
 }
 
 function mapStateToProps (state) {
   return {
-    text_generation_results: state.text_generation_results,
+    analysisResults: state.analysisResults,
     error: state.error,
     loading: state.loading,
   };
