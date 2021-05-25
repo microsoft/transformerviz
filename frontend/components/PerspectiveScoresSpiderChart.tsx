@@ -1,0 +1,151 @@
+import React, { Component } from "react";
+import ReactDOM from "react-dom";
+import * as d3 from "d3";
+import { DirectionalHint } from 'office-ui-fabric-react/lib/Tooltip';
+import { PrimaryButton, DefaultButton } from 'office-ui-fabric-react/lib/Button';
+
+
+type PerspectiveScoresSpiderChartProps = {
+  scores: any,
+  axes: any,
+  colors: any
+}
+
+class PerspectiveScoresSpiderChart extends Component<PerspectiveScoresSpiderChartProps, null> {
+
+  constructor(props) {
+    super(props);
+
+    this.node = React.createRef<HTMLDivElement>();
+    this.domID = `perspectivescoresradarchart`;
+  }
+
+  node: React.RefObject<HTMLDivElement>
+
+  domID: string
+
+  componentDidMount() {
+    this.createDistributionBarChart();
+  }
+
+  componentDidUpdate() {
+    this.createDistributionBarChart();
+  }
+
+  setSelectedScore = (selectedScore: string) => {
+    this.setState({
+      selectedScore: selectedScore
+    });
+  }
+
+  createDistributionBarChart = () => {
+    var _this = this;
+    var body = d3.select(this.node.current);
+
+    var margin = { top: 5, right: 15, bottom: 50, left: 55 }
+    var h = 111 - margin.top - margin.bottom
+    var w = 200;
+
+    // SVG
+    d3.select(`#${this.domID}`).remove();
+    var svg = body.append('svg')
+        .attr('id', this.domID)
+        .attr('height', 310)
+        .attr('width', 310)
+        .attr('float', 'left');
+
+    var radialScale = d3.scaleLinear()
+        .domain([0.0, 1.0])
+        .range([0,100]);
+    var ticks = [0.0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0];
+
+    ticks.map(t =>
+        svg.append("circle")
+        .attr("cx", 155)
+        .attr("cy", 155)
+        .attr("fill", "none")
+        .attr("stroke", "gray")
+        .attr("r", radialScale(t))
+    );
+
+    ticks.map(t =>
+        svg.append("text")
+        .attr("x", 160)
+        .attr("y", 155 - radialScale(t))
+        .attr("font-size", "8px")
+        .text(t.toString())
+    );
+
+    const angleToCoordinate = (angle: number, value: number) => {
+        let x = Math.cos(angle) * radialScale(value);
+        let y = Math.sin(angle) * radialScale(value);
+        return {"x": 155 + x, "y": 155 - y};
+    }
+
+    for (var i = 0; i < this.props.axes.length; i++) {
+        let axisName = this.props.axes[i][0];
+        let angle = (Math.PI / 2) + (2 * Math.PI * i / this.props.axes.length);
+        let line_coordinate = angleToCoordinate(angle, 1.0);
+        let label_coordinate = angleToCoordinate(angle, 1.05);
+
+        //draw axis line
+        svg.append("line")
+        .attr("x1", 155)
+        .attr("y1", 155)
+        .attr("x2", line_coordinate.x)
+        .attr("y2", line_coordinate.y)
+        .attr("stroke","black");
+
+        //draw axis label
+        svg.append("text")
+        .attr("x", label_coordinate.x)
+        .attr("y", label_coordinate.y)
+        .attr("font-size", "12px")
+        .text(axisName);
+    }
+
+    let line = d3.line()
+        .x(d => d.x)
+        .y(d => d.y);
+    let colors = ["darkorange", "gray", "navy"];
+
+    const getPathCoordinates = (scoreData: any) => {
+        let coordinates = [];
+        for (var i = 0; i < this.props.axes.length; i++){
+            let axisFeatureName = this.props.axes[i][1];
+            let angle = (Math.PI / 2) + (2 * Math.PI * i / this.props.axes.length);
+            coordinates.push(angleToCoordinate(angle, scoreData[axisFeatureName]));
+        }
+        return coordinates;
+    }
+
+    for (var i = 0; i < this.props.scores.length; i ++){
+        let d = this.props.scores[i];
+        let color = this.props.colors[i % this.props.colors.length];
+        let coordinates = getPathCoordinates(d);
+
+        //draw the path element
+        svg.append("path")
+        .datum(coordinates)
+        .attr("d",line)
+        .attr("stroke-width", 3)
+        .attr("stroke", color)
+        .attr("fill", color)
+        .attr("stroke-opacity", 1)
+        .attr("opacity", 0.5);
+    }
+
+  }
+
+  render() {
+    return (
+      <div className="plot plot-distribution">
+        <div ref={this.node}/>
+      </div>
+    );
+  }
+}
+
+
+
+export default PerspectiveScoresSpiderChart;
