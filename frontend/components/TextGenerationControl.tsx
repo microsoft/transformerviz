@@ -33,14 +33,14 @@ class TextGenerationControl extends React.Component<
     this.state = {
       textGenerationPrompt: "",
       model: "gpt2",
-      doSample: false,
+      doSample: true,
       earlyStopping: false,
       isFolded: false,
       minLength: 10,
-      maxLength: 20,
-      topK: 50,
-      topP: 0.0,
-      temperature: 0.0,
+      maxLength: 70,
+      topK: 0,
+      topP: 0.8,
+      temperature: 1.0,
       numBeams: 1,
     };
   }
