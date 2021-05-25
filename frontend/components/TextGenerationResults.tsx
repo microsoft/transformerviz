@@ -1,6 +1,12 @@
 import React from "react";
 import * as _ from "lodash"
 import AnalyzedText from "../models/AnalyzedText";
+import ReactDOM from "react-dom";
+import { Fabric } from "office-ui-fabric-react/lib/Fabric";
+import { TextField } from "office-ui-fabric-react/lib/TextField";
+import { DefaultButton } from "office-ui-fabric-react/lib/Button";
+import { List } from "office-ui-fabric-react/lib/List";
+import PerspectiveScoresBarChart from "./PerspectiveScoresBarChart";
 
 type TextGenerationResultsProps = {
   analysisResults: AnalyzedText[],
@@ -33,6 +39,21 @@ class TextGenerationResults extends React.Component<TextGenerationResultsProps, 
       );
     }
 
+    const getResultScoreObj: any = (item: any) => {
+      let resultScores = [
+        {score: "TOXICITY", value: item.toxicity, scoreName: "Toxicity"},
+        {score: "SEVERE_TOXICITY", value: item.severeToxicity, scoreName: "Severe Toxicity"},
+        {score: "IDENTITY_ATTACK", value: item.identityAttack, scoreName: "Identity Attack"},
+        {score: "INSULT", value: item.insult, scoreName: "Insult"},
+        {score: "PROFANITY", value: item.profanity, scoreName: "Profanity"},
+        {score: "THREAT", value: item.threat, scoreName: "Threat"},
+        {score: "SEXUALLY_EXPLICIT", value: item.sexuallyExplicit, scoreName: "Sexually Explicit"},
+        {score: "FLIRTATION", value: item.flirtation, scoreName: "Flirtation"}
+      ];
+
+      return resultScores;
+    }
+
     return (
       <div>
         <h4 className="mb-4 text-2xl" style={{fontWeight: 600}}>Generated Results</h4>
@@ -42,7 +63,7 @@ class TextGenerationResults extends React.Component<TextGenerationResultsProps, 
               {item.id}
             </div>
             <div className="flex-none" style={{width: "140px", border: "solid black 1px"}}>
-              BAR CHART HERE
+              <PerspectiveScoresBarChart id={item.id} scores={getResultScoreObj(item)} defaultSelectedScore="TOXICITY" />
             </div>
             <button 
               className="flex items-center flex-auto text-left px-4"

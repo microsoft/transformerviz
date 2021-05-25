@@ -18,7 +18,7 @@ function rootReducer(state = initialState, action) {
           return Object.assign({}, state, {loding: false, error: action.error});
 
         case "SET_GENERATED_TEXT_RESULTS":
-          const analysisResults = action.text_generation_results?.map((result, index) => new AnalyzedText(result, index+1));
+          const analysisResults = action.text_generation_results?.map((result) => new AnalyzedText(result));
           return Object.assign({}, state, {loading: false, analysisResults: analysisResults, error: null});
 
         default:

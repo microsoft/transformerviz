@@ -45,3 +45,12 @@ body {
   flex-grow: 1;
   font-style: bold;
 }
+
+.bar {
+  fill: rgba(252, 84, 104, 1);
+}
+
+.highlighted-bar {
+  stroke-width: 2px;
+  stroke: rgb(0,0,0, 1);
+}
