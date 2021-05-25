@@ -8,8 +8,8 @@ import { createLogger } from 'redux-logger';
 import thunkMiddleware from 'redux-thunk';
 import { initializeIcons } from 'office-ui-fabric-react/lib/Icons';
 
-import "./app.css";
 import "./tailwind.css";
+import "./app.css";
 
 const loggerMiddleware = createLogger()
 const store = createStore(rootReducer, applyMiddleware(thunkMiddleware, loggerMiddleware));

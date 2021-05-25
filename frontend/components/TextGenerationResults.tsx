@@ -56,9 +56,9 @@ class TextGenerationResults extends React.Component<TextGenerationResultsProps, 
 
     return (
       <div>
-        <h4 className="mb-4 text-2xl" style={{fontWeight: 600}}>Generated Results</h4>
+        <h1 className="mb-4">Generated Results</h1>
         {this.props.analysisResults.map((item) => 
-          <div className="flex items-stretch mb-4" style={{height: "110px", border: this.props.selectedTextIds.includes(item.id) ? "solid #167DF5 2px" : "none"}}>
+          <div className="flex items-stretch mb-4" style={{minHeight: "110px", border: this.props.selectedTextIds.includes(item.id) ? "solid #167DF5 2px" : "none"}}>
             <div className="flex items-center flex-none px-1" style={{backgroundColor: "#8894B1", color: "white", fontSize: "18px", lineHeight: "20px"}}>
               {item.id}
             </div>

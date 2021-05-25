@@ -3,8 +3,8 @@ import * as d3 from "d3";
 import * as _ from "lodash"
 import ReactDOM from "react-dom";
 import AnalyzedText from "../models/AnalyzedText";
-import {BiEdit} from "react-icons/bi";
 import PerspectiveScoresSpiderChart from "./PerspectiveScoresSpiderChart";
+import { FiEdit } from "react-icons/fi";
 
 type TextDetailedAnalysisProps = {
   selectedText: AnalyzedText[],
@@ -20,7 +20,8 @@ class TextGenerationResults extends React.Component<TextDetailedAnalysisProps, n
     const tabColors = ["#FD8A40", "#60B877", "#F03C92", "#8B3CF0"];
 
     return (
-      <div>
+      <div className="p-3" style={{boxShadow: "0px 0px 12px rgba(0, 0, 0, 0.12)"}}>
+        <h1 className="mb-4">Toxicity Analysis</h1>
         <div className="mb-4 text-2xl">
           <PerspectiveScoresSpiderChart
             scores={this.props.selectedText}
@@ -38,7 +39,7 @@ class TextGenerationResults extends React.Component<TextDetailedAnalysisProps, n
           />
         </div>
         {this.props.selectedText.map((item, index) => 
-          <div className="flex items-stretch mb-4" style={{height: "110px"}}>
+          <div className="flex items-stretch mb-4" style={{minHeight: "110px"}}>
             <div className="flex items-center flex-none px-1" style={{backgroundColor: tabColors[index % tabColors.length], color: "white", fontSize: "18px", lineHeight: "20px"}}>
               {item.id}
             </div>
@@ -46,7 +47,7 @@ class TextGenerationResults extends React.Component<TextDetailedAnalysisProps, n
               {item.text}
             </div>
             <div className="flex items-center flex-none px-1" style={{backgroundColor: "#E1E6F0", color: "white", fontSize: "18px", lineHeight: "20px"}}>
-              <BiEdit style={{color: "#167DF5"}}/>
+              <FiEdit style={{color: "#167DF5"}}/>
             </div>
           </div>
         )}
