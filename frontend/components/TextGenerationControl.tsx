@@ -127,12 +127,15 @@ class TextGenerationControl extends React.Component<
   }
 
   render() {
+    const textFieldStyle = {root: {width: "110px", display: "inline-block"}};
     if (this.state.isFolded) {
       return (
         <div
           style={{
               backgroundColor: "white",
-              padding: "24px",
+              paddingLeft: "24px",
+              paddingRight: "24px",
+              paddingTop: "24px",
               border: "1px solid #E7E7E7",
               borderRadius: "4px",
               boxShadow: "0px 2px 12px rgba(0, 0, 0, 0.12)",
@@ -149,7 +152,7 @@ class TextGenerationControl extends React.Component<
               />
           </div>
           <button className="flex items-center justify-center w-full p-1" onClick={() => this.toggleFold()}>
-              <FiChevronDown />
+              <FiChevronDown size={25} className="light-gray-text" />
           </button>
         </div>
       )
@@ -158,7 +161,9 @@ class TextGenerationControl extends React.Component<
         <div
           style={{
               backgroundColor: "white",
-              padding: "24px",
+              paddingLeft: "24px",
+              paddingRight: "24px",
+              paddingTop: "24px",
               border: "1px solid #E7E7E7",
               borderRadius: "4px",
               boxShadow: "0px 2px 12px rgba(0, 0, 0, 0.12)",
@@ -180,56 +185,72 @@ class TextGenerationControl extends React.Component<
               onClick={this.generateTextClickHandler}
             />
           </div>
-          <div className="grid grid-rows-2 gap-4 grid-flow-col p-5" style={{backgroundColor: "#F3F6FD"}}>
-            <Checkbox
-              label="Sample"
-              onChange={this.onSampleChange}
-              checked={this.state.doSample}
-            />
-            <Checkbox
-              label="Early Stopping"
-              onChange={this.onEarlyStoppingChange}
-              checked={this.state.earlyStopping}
-            />
-            <TextField
-              label="Max Length"
-              onChange={this.onMaxLengthChange}
-              value={this.state.maxLength.toString()}
-            />
-            <TextField
-              label="Min Length"
-              onChange={this.onMinLengthChange}
-              value={this.state.minLength.toString()}
-            />
-            <TextField
-              label="Top k"
-              onChange={this.onTopKChange}
-              value={this.state.topK.toString()}
-            />
-            <TextField
-              label="Num. Beams"
-              onChange={this.onNumBeamsChange}
-              value={this.state.numBeams.toString()}
-            />
-            <Slider
-              label="Temperature"
-              min={0.0}
-              max={1.0}
-              step={0.1}
-              onChange={this.onTemperatureChange}
-              value={this.state.temperature}
-            />
-            <Slider
-              label="Top p"
-              min={0.0}
-              max={1.0}
-              step={0.1}
-              onChange={this.onTopPChange}
-              value={this.state.topP}
-            />
+          <div className="text-gen-form-grid p-4" style={{backgroundColor: "#F3F6FD"}}>
+            <div className="grid grid-rows-2 items-center">
+              <Checkbox
+                label="Sample"
+                onChange={this.onSampleChange}
+                checked={this.state.doSample}
+              />
+              <Checkbox
+                label="Early Stopping"
+                onChange={this.onEarlyStoppingChange}
+                checked={this.state.earlyStopping}
+              />
+            </div>
+            <div className="grid grid-rows-2 grid-cols-3 items-center">
+              <span className="mr-3 font-semibold text-right">Max Length</span>
+              <TextField
+                onChange={this.onMaxLengthChange}
+                value={this.state.maxLength.toString()}
+                styles={textFieldStyle}
+              />
+              <span className="ml-3 light-gray-text">[1-100]</span>
+              <span className="mr-3 font-semibold text-right">Min Length</span>
+              <TextField
+                onChange={this.onMinLengthChange}
+                value={this.state.minLength.toString()}
+                styles={textFieldStyle}
+              />
+              <span className="ml-3 light-gray-text">[1-100]</span>
+            </div>
+            <div className="grid grid-rows-2 grid-cols-3 items-center">
+              <span className="mr-3 font-semibold text-right">Num. Beams</span>
+              <TextField
+                onChange={this.onNumBeamsChange}
+                value={this.state.numBeams.toString()}
+                styles={textFieldStyle}
+              />
+              <span className="ml-3 light-gray-text">[1-100]</span>
+              <span className="mr-3 font-semibold text-right">Top K</span>
+              <TextField
+                onChange={this.onTopKChange}
+                value={this.state.topK.toString()}
+                styles={textFieldStyle}
+              />
+              <div/>
+            </div>
+            <div className="grid grid-rows-2">
+              <Slider
+                label="Temperature"
+                min={0.0}
+                max={1.0}
+                step={0.1}
+                onChange={this.onTemperatureChange}
+                value={this.state.temperature}
+              />
+              <Slider
+                label="Top P"
+                min={0.0}
+                max={1.0}
+                step={0.1}
+                onChange={this.onTopPChange}
+                value={this.state.topP}
+              />
+            </div>
           </div>
           <button className="flex items-center justify-center w-full p-1" onClick={() => this.toggleFold()}>
-              <FiChevronUp />
+              <FiChevronUp size={25} className="light-gray-text" />
           </button>
         </div>
       );

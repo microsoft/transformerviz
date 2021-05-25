@@ -1,4 +1,5 @@
 import React from "react";
+import { ComboBox, IComboBoxOption, Stack } from "office-ui-fabric-react"
 import AnalyzedText from "../models/AnalyzedText";
 import PerspectiveScoresBarChart from "./PerspectiveScoresBarChart";
 
@@ -48,11 +49,46 @@ class TextGenerationResults extends React.Component<TextGenerationResultsProps, 
       return resultScores;
     }
 
+    const sortOptions: IComboBoxOption[] = [
+      { key: 'toxicity', text: 'Toxicity' },
+      { key: 'severe', text: 'Severe Toxicity' },
+      { key: 'identity', text: 'Identity Attack' },
+      { key: 'insult', text: 'Insult' },
+      { key: 'profanity', text: 'Profanity' },
+      { key: 'threat', text: 'Threat' },
+      { key: 'sexually', text: 'Sexually Explicit' },
+      { key: 'flirtation', text: 'Flirtation' },
+    ];
+
+    const scoreOptions: IComboBoxOption[] = [
+      { key: 'all', text: 'All Scores' },
+      { key: 'toxicity', text: 'Toxicity' },
+      { key: 'severe', text: 'Severe Toxicity' },
+      { key: 'identity', text: 'Identity Attack' },
+      { key: 'insult', text: 'Insult' },
+      { key: 'profanity', text: 'Profanity' },
+      { key: 'threat', text: 'Threat' },
+      { key: 'sexually', text: 'Sexually Explicit' },
+      { key: 'flirtation', text: 'Flirtation' },
+    ];
+
     const chartWidth = 140;
 
     return (
       <div>
-        <h1 className="mb-4">Generated Results</h1>
+        <h1>Generated Results</h1>
+        <Stack horizontal horizontalAlign="end" tokens={{childrenGap: 20}} styles={{root: {marginBottom: "16px"}}}>
+          <ComboBox
+            label="Sort by"
+            options={sortOptions}
+            styles={{root: {maxWidth: 160}}}
+          />
+          <ComboBox
+            label="Show score"
+            options={scoreOptions}
+            styles={{root: {maxWidth: 160}}}
+          />
+        </Stack>
         {this.props.analysisResults.map((item) => 
           <div className="flex items-stretch mb-4" style={{minHeight: "110px", border: this.props.selectedTextIds.includes(item.id) ? "solid #167DF5 2px" : "none"}}>
             <div className="flex items-center flex-none px-1" style={{backgroundColor: "#8894B1", color: "white", fontSize: "18px", lineHeight: "20px"}}>
