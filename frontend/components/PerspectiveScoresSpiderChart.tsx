@@ -42,27 +42,29 @@ class PerspectiveScoresSpiderChart extends Component<PerspectiveScoresSpiderChar
     var _this = this;
     var body = d3.select(this.node.current);
 
-    var margin = { top: 5, right: 15, bottom: 50, left: 55 }
-    var h = 111 - margin.top - margin.bottom
-    var w = 200;
+    var h = 310
+    var w = 450;
+    var maxRadius = 125;
+    var centerX = 225;
+    var centerY = 155;
 
     // SVG
     d3.select(`#${this.domID}`).remove();
     var svg = body.append('svg')
         .attr('id', this.domID)
-        .attr('height', 310)
-        .attr('width', 400)
+        .attr('height', h)
+        .attr('width', w)
         .attr('float', 'left');
 
     var radialScale = d3.scaleLinear()
         .domain([0.0, 1.0])
-        .range([0,100]);
+        .range([0, maxRadius]);
     var ticks = [0.0, 0.2, 0.4, 0.6, 0.8, 1.0];
 
     ticks.map(t =>
         svg.append("circle")
-        .attr("cx", 200)
-        .attr("cy", 155)
+        .attr("cx", centerX)
+        .attr("cy", centerY)
         .attr("fill", "none")
         .attr("stroke", "rgba(224, 224, 224, 1)")
         .attr("stroke-width", "1px")
@@ -72,7 +74,7 @@ class PerspectiveScoresSpiderChart extends Component<PerspectiveScoresSpiderChar
     const angleToCoordinate = (angle: number, value: number) => {
         let x = Math.cos(angle) * radialScale(value);
         let y = Math.sin(angle) * radialScale(value);
-        return {"x": 200 + x, "y": 155 - y};
+        return {"x": centerX + x, "y": centerY - y};
     }
 
     const getLabelOffset = (index: number, label: string) => {
@@ -80,8 +82,12 @@ class PerspectiveScoresSpiderChart extends Component<PerspectiveScoresSpiderChar
         return {"x":  -(label.length) * 5, "y": 0.0};
       } else if (index == 3) {
         return {"x":  -(label.length) * 5, "y": 6};
-      } else if (index == 4 || index == 5) {
+      } else if (index == 4) {
+        return {"x": -(label.length) * 2, "y": 12};
+      } else if (index == 5) {
         return {"x": 0.0, "y": 12};
+      } else if (index == 0) {
+        return {"x": -(label.length) * 2, "y": -2.0};
       } else {
         return {"x": 0.0, "y": 0.0};
       }
@@ -96,8 +102,8 @@ class PerspectiveScoresSpiderChart extends Component<PerspectiveScoresSpiderChar
 
         //draw axis line
         svg.append("line")
-        .attr("x1", 200)
-        .attr("y1", 155)
+        .attr("x1", centerX)
+        .attr("y1", centerY)
         .attr("x2", line_coordinate.x)
         .attr("y2", line_coordinate.y)
         .attr("stroke","rgba(224, 224, 224, 1)")
