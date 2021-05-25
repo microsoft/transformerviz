@@ -30,6 +30,12 @@ function generateText(config) {
     }
 }
 
+function selectText(id: number) {
+  return {
+    type: "SELECT_TEXT",
+    id: id
+  }
+}
 
 
 export {
@@ -37,4 +43,5 @@ export {
   setGeneratedTextResults,
   generateTextFailed,
   generateText,
+  selectText,
 };
