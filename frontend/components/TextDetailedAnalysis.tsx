@@ -4,6 +4,7 @@ import * as _ from "lodash"
 import ReactDOM from "react-dom";
 import AnalyzedText from "../models/AnalyzedText";
 import {BiEdit} from "react-icons/bi";
+import PerspectiveScoresSpiderChart from "./PerspectiveScoresSpiderChart";
 
 type TextDetailedAnalysisProps = {
   selectedText: AnalyzedText[],
@@ -17,10 +18,24 @@ class TextGenerationResults extends React.Component<TextDetailedAnalysisProps, n
 
   render() {
     const tabColors = ["#FD8A40", "#60B877", "#F03C92", "#8B3CF0"];
+
     return (
       <div>
         <div className="mb-4 text-2xl">
-          d3 SVG chart here
+          <PerspectiveScoresSpiderChart
+            scores={this.props.selectedText}
+            axes={[
+              ["Toxicity", "toxicity"],
+              ["Severe Toxicity", "severeToxicity"],
+              ["Identity Attack", "identityAttack"],
+              ["Insult", "insult"],
+              ["Profanity", "profanity"],
+              ["Threat", "threat"],
+              ["Sexually Explicit", "sexuallyExplicit"],
+              ["Flirtation", "flirtation"]
+            ]}
+            colors={tabColors}
+          />
         </div>
         {this.props.selectedText.map((item, index) => 
           <div className="flex items-stretch mb-4" style={{height: "110px"}}>

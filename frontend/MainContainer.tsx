@@ -46,6 +46,17 @@ const Container: React.FunctionComponent<ContainerProps> = ({
       }
     }
 
+    const getDetailedAnalysisComponent = () => {
+      if (selectedTextIds.length == 0) {
+        return (<React.Fragment />);
+      } else {
+        return (
+          <TextDetailedAnalysis
+            selectedText={analysisResults.filter(item => selectedTextIds.includes(item.id))} />
+        );
+      }
+    }
+
     return (
       <div className="m-4 font-sans">
         <TextGenerationControl generateText={generateText} />
@@ -56,8 +67,7 @@ const Container: React.FunctionComponent<ContainerProps> = ({
             error={error}
             onSelectTextId={onSelectTextId}
             selectedTextIds={selectedTextIds} />
-          <TextDetailedAnalysis
-            selectedText={analysisResults.filter(item => selectedTextIds.includes(item.id))} />
+          {getDetailedAnalysisComponent()}
         </div>
       </div>
     );
