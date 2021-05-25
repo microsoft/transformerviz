@@ -4,6 +4,7 @@ import { Fabric } from "office-ui-fabric-react/lib/Fabric";
 import { TextField } from "office-ui-fabric-react/lib/TextField";
 import { PrimaryButton } from "office-ui-fabric-react/lib/Button";
 import { Checkbox, Stack, Slider } from "office-ui-fabric-react";
+import { FiChevronUp, FiChevronDown } from "react-icons/fi";
 
 type TextGenerationControlProps = {
   generateText: Function;
@@ -14,6 +15,7 @@ type TextGenerationControlState = {
   model: string;
   doSample: boolean;
   earlyStopping: boolean;
+  isFolded: boolean;
   minLength: number;
   maxLength: number;
   topK: number;
@@ -33,11 +35,12 @@ class TextGenerationControl extends React.Component<
       model: "gpt2",
       doSample: false,
       earlyStopping: false,
+      isFolded: false,
       minLength: 10,
       maxLength: 20,
       topK: 50,
-      topP: 1.0,
-      temperature: 1.0,
+      topP: 0.0,
+      temperature: 0.0,
       numBeams: 1,
     };
   }
@@ -117,80 +120,120 @@ class TextGenerationControl extends React.Component<
     });
   };
 
+  toggleFold = () => {
+    this.setState({
+      isFolded: !this.state.isFolded
+    });
+  }
+
   render() {
-    return (
-      <div
-        style={{
-            backgroundColor: "white",
-            padding: "24px",
-            border: "1px solid #E7E7E7",
-            borderRadius: "4px",
-            boxShadow: "0px 2px 12px rgba(0, 0, 0, 0.12)",
-            marginBottom: "30px"
-        }}
-      >
-        <div className="flex items-end mb-4">
-          <TextField
-            className="flex-initial w-11/12 mr-4"
-            label="Text Generation Prompt"
-            placeholder="Input your prompt"
-            name="prompt"
-            value={this.state.textGenerationPrompt}
-            onChange={this.onTextPromptChange}
-          />
-          <PrimaryButton 
-            className="flex-auto"
-            text="Generate"
-            onClick={this.generateTextClickHandler}
-          />
+    if (this.state.isFolded) {
+      return (
+        <div
+          style={{
+              backgroundColor: "white",
+              padding: "24px",
+              border: "1px solid #E7E7E7",
+              borderRadius: "4px",
+              boxShadow: "0px 2px 12px rgba(0, 0, 0, 0.12)",
+              marginBottom: "30px"
+          }}
+        >
+          <div className="flex items-center">
+            <h1 className="mr-4">Text Generation Prompt</h1>
+            <TextField
+                className="flex-auto"
+                name="prompt"
+                value={this.state.textGenerationPrompt}
+                onChange={this.onTextPromptChange}
+              />
+          </div>
+          <button className="flex items-center justify-center w-full p-1" onClick={() => this.toggleFold()}>
+              <FiChevronDown />
+          </button>
         </div>
-        <div className="grid grid-rows-2 gap-4 grid-flow-col p-5" style={{backgroundColor: "#F3F6FD"}}>
-          <Checkbox
-            label="Sample"
-            onChange={this.onSampleChange}
-            styles={{ root: { paddingBottom: "16px" } }}
-          />
-          <Checkbox
-            label="Early Stopping"
-            onChange={this.onEarlyStoppingChange}
-          />
-          <TextField
-            label="Max Length"
-            defaultValue="20"
-            onChange={this.onMaxLengthChange}
-          />
-          <TextField
-            label="Min Length"
-            defaultValue="10"
-            onChange={this.onMinLengthChange}
-          />
-          <TextField
-            label="Top k"
-            defaultValue="50"
-            onChange={this.onTopKChange}
-          />
-          <TextField
-            label="Num. Beams"
-            defaultValue="1"
-            onChange={this.onNumBeamsChange}
-          />
-          <Slider
-            label="Temperature"
-            min={0.0}
-            max={1.0}
-            step={0.1}
-            onChange={this.onTemperatureChange}
-          />
-          <Slider
-            label="Top p"
-            min={0.0}
-            max={1.0}
-            step={0.1}
-            onChange={this.onTopPChange}
-          />
+      )
+    } else {
+      return (
+        <div
+          style={{
+              backgroundColor: "white",
+              padding: "24px",
+              border: "1px solid #E7E7E7",
+              borderRadius: "4px",
+              boxShadow: "0px 2px 12px rgba(0, 0, 0, 0.12)",
+              marginBottom: "30px"
+          }}
+        >
+          <div className="flex items-end mb-4">
+            <TextField
+              className="flex-initial w-11/12 mr-4"
+              label="Text Generation Prompt"
+              placeholder="Input your prompt"
+              name="prompt"
+              value={this.state.textGenerationPrompt}
+              onChange={this.onTextPromptChange}
+            />
+            <PrimaryButton 
+              className="flex-auto"
+              text="Generate"
+              onClick={this.generateTextClickHandler}
+            />
+          </div>
+          <div className="grid grid-rows-2 gap-4 grid-flow-col p-5" style={{backgroundColor: "#F3F6FD"}}>
+            <Checkbox
+              label="Sample"
+              onChange={this.onSampleChange}
+              checked={this.state.doSample}
+            />
+            <Checkbox
+              label="Early Stopping"
+              onChange={this.onEarlyStoppingChange}
+              checked={this.state.earlyStopping}
+            />
+            <TextField
+              label="Max Length"
+              onChange={this.onMaxLengthChange}
+              value={this.state.maxLength.toString()}
+            />
+            <TextField
+              label="Min Length"
+              onChange={this.onMinLengthChange}
+              value={this.state.minLength.toString()}
+            />
+            <TextField
+              label="Top k"
+              onChange={this.onTopKChange}
+              value={this.state.topK.toString()}
+            />
+            <TextField
+              label="Num. Beams"
+              onChange={this.onNumBeamsChange}
+              value={this.state.numBeams.toString()}
+            />
+            <Slider
+              label="Temperature"
+              min={0.0}
+              max={1.0}
+              step={0.1}
+              onChange={this.onTemperatureChange}
+              value={this.state.temperature}
+            />
+            <Slider
+              label="Top p"
+              min={0.0}
+              max={1.0}
+              step={0.1}
+              onChange={this.onTopPChange}
+              value={this.state.topP}
+            />
+          </div>
+          <button className="flex items-center justify-center w-full p-1" onClick={() => this.toggleFold()}>
+              <FiChevronUp />
+          </button>
         </div>
-      </div>
-    );
+      );
+    }
   }
 }
 
