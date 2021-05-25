@@ -10,9 +10,9 @@ class AnalyzedText {
   sexuallyExplicit: number;
   flirtation: number;
 
-  constructor(text_generation_result: any, id: number) {
+  constructor(text_generation_result: any) {
     this.text = text_generation_result.text;
-    this.id = id;
+    this.id = text_generation_result.id;
     this.toxicity = text_generation_result.perspective.attributeScores.TOXICITY.summaryScore.value;
     this.severeToxicity = text_generation_result.perspective.attributeScores.SEVERE_TOXICITY.summaryScore.value;
     this.identityAttack = text_generation_result.perspective.attributeScores.IDENTITY_ATTACK.summaryScore.value;
