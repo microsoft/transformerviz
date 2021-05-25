@@ -2,6 +2,7 @@ import React, { FunctionComponent } from "react";
 import ReactDOM from "react-dom";
 import { Fabric } from "office-ui-fabric-react/lib/Fabric";
 import { TextField } from "office-ui-fabric-react/lib/TextField";
+import { MaskedTextField } from "office-ui-fabric-react/lib/TextField";
 import { PrimaryButton } from "office-ui-fabric-react/lib/Button";
 import { Checkbox, Stack, Slider } from "office-ui-fabric-react";
 import { FiChevronUp, FiChevronDown } from "react-icons/fi";
@@ -198,37 +199,53 @@ class TextGenerationControl extends React.Component<
                 checked={this.state.earlyStopping}
               />
             </div>
-            <div className="grid grid-rows-2 grid-cols-3 items-center">
+            <div className="stacked-text-field-grid">
               <span className="mr-3 font-semibold text-right">Max Length</span>
-              <TextField
-                onChange={this.onMaxLengthChange}
-                value={this.state.maxLength.toString()}
-                styles={textFieldStyle}
-              />
-              <span className="ml-3 light-gray-text">[1-100]</span>
+              <div>
+                <MaskedTextField
+                  onChange={this.onMaxLengthChange}
+                  value={this.state.maxLength.toString()}
+                  mask="999"
+                  maskChar=""
+                  styles={textFieldStyle}
+                />
+                <span className="ml-3 light-gray-text">[1-100]</span>
+              </div>
               <span className="mr-3 font-semibold text-right">Min Length</span>
-              <TextField
-                onChange={this.onMinLengthChange}
-                value={this.state.minLength.toString()}
-                styles={textFieldStyle}
-              />
-              <span className="ml-3 light-gray-text">[1-100]</span>
+              <div>
+                <MaskedTextField
+                  onChange={this.onMinLengthChange}
+                  value={this.state.minLength.toString()}
+                  mask="999"
+                  maskChar=""
+                  styles={textFieldStyle}
+                />
+                <span className="ml-3 light-gray-text">[1-100]</span>
+              </div>
             </div>
-            <div className="grid grid-rows-2 grid-cols-3 items-center">
+            <div className="stacked-text-field-grid">
               <span className="mr-3 font-semibold text-right">Num. Beams</span>
-              <TextField
-                onChange={this.onNumBeamsChange}
-                value={this.state.numBeams.toString()}
-                styles={textFieldStyle}
-              />
-              <span className="ml-3 light-gray-text">[1-100]</span>
+              <div>
+                <MaskedTextField
+                  onChange={this.onNumBeamsChange}
+                  value={this.state.numBeams.toString()}
+                  mask="999"
+                  maskChar=""
+                  styles={textFieldStyle}
+                />
+                <span className="ml-3 light-gray-text">[1-100]</span>
+              </div>
               <span className="mr-3 font-semibold text-right">Top K</span>
-              <TextField
-                onChange={this.onTopKChange}
-                value={this.state.topK.toString()}
-                styles={textFieldStyle}
-              />
-              <div/>
+              <div>
+                <MaskedTextField
+                  onChange={this.onTopKChange}
+                  value={this.state.topK.toString()}
+                  mask="999"
+                  maskChar=""
+                  styles={textFieldStyle}
+                />
+                <div/>
+              </div>
             </div>
             <div className="grid grid-rows-2">
               <Slider

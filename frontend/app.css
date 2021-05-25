@@ -35,6 +35,13 @@ h1 {
   grid-template-columns: 1fr 2fr 2fr 3fr;
 }
 
+.stacked-text-field-grid {
+  display: grid;
+  grid-template-rows: 1fr 1fr;
+  grid-template-columns: 1fr 2fr;
+  align-items: center;
+}
+
 .ms-Checkbox-label {
   font-weight: 600;
 }
