@@ -1,11 +1,6 @@
 import React from "react";
-import * as _ from "lodash"
+import { ComboBox, IComboBoxOption, Stack } from "office-ui-fabric-react"
 import AnalyzedText from "../models/AnalyzedText";
-import ReactDOM from "react-dom";
-import { Fabric } from "office-ui-fabric-react/lib/Fabric";
-import { TextField } from "office-ui-fabric-react/lib/TextField";
-import { DefaultButton } from "office-ui-fabric-react/lib/Button";
-import { List } from "office-ui-fabric-react/lib/List";
 import PerspectiveScoresBarChart from "./PerspectiveScoresBarChart";
 
 type TextGenerationResultsProps = {
@@ -54,16 +49,53 @@ class TextGenerationResults extends React.Component<TextGenerationResultsProps, 
       return resultScores;
     }
 
+    const sortOptions: IComboBoxOption[] = [
+      { key: 'toxicity', text: 'Toxicity' },
+      { key: 'severe', text: 'Severe Toxicity' },
+      { key: 'identity', text: 'Identity Attack' },
+      { key: 'insult', text: 'Insult' },
+      { key: 'profanity', text: 'Profanity' },
+      { key: 'threat', text: 'Threat' },
+      { key: 'sexually', text: 'Sexually Explicit' },
+      { key: 'flirtation', text: 'Flirtation' },
+    ];
+
+    const scoreOptions: IComboBoxOption[] = [
+      { key: 'all', text: 'All Scores' },
+      { key: 'toxicity', text: 'Toxicity' },
+      { key: 'severe', text: 'Severe Toxicity' },
+      { key: 'identity', text: 'Identity Attack' },
+      { key: 'insult', text: 'Insult' },
+      { key: 'profanity', text: 'Profanity' },
+      { key: 'threat', text: 'Threat' },
+      { key: 'sexually', text: 'Sexually Explicit' },
+      { key: 'flirtation', text: 'Flirtation' },
+    ];
+
+    const chartWidth = 140;
+
     return (
       <div>
-        <h1 className="mb-4">Generated Results</h1>
+        <h1>Generated Results</h1>
+        <Stack horizontal horizontalAlign="end" tokens={{childrenGap: 20}} styles={{root: {marginBottom: "16px"}}}>
+          <ComboBox
+            label="Sort by"
+            options={sortOptions}
+            styles={{root: {maxWidth: 160}}}
+          />
+          <ComboBox
+            label="Show score"
+            options={scoreOptions}
+            styles={{root: {maxWidth: 160}}}
+          />
+        </Stack>
         {this.props.analysisResults.map((item) => 
           <div className="flex items-stretch mb-4" style={{minHeight: "110px", border: this.props.selectedTextIds.includes(item.id) ? "solid #167DF5 2px" : "none"}}>
             <div className="flex items-center flex-none px-1" style={{backgroundColor: "#8894B1", color: "white", fontSize: "18px", lineHeight: "20px"}}>
               {item.id}
             </div>
-            <div className="flex-none" style={{width: "140px", border: "solid black 1px"}}>
-              <PerspectiveScoresBarChart id={item.id} scores={getResultScoreObj(item)} defaultSelectedScore="TOXICITY" />
+            <div className="flex-none" style={{width: `${chartWidth}px`, border: "solid black 1px"}}>
+              <PerspectiveScoresBarChart id={item.id} width={chartWidth} scores={getResultScoreObj(item)} defaultSelectedScore="TOXICITY" />
             </div>
             <button 
               className="flex items-center flex-auto text-left px-4"

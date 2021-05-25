@@ -5,7 +5,8 @@ import {
   requestGenerateText,
   setGeneratedTextResults,
   generateTextFailed,
-  generateText
+  generateText,
+  selectText
 } from './actions';
 import TextGenerationControl from "./components/TextGenerationControl";
 import TextGenerationResults from "./components/TextGenerationResults";
@@ -16,36 +17,25 @@ type ContainerProps = {
   analysisResults: AnalyzedText[],
   error: any,
   loading: any,
+  selectedTextIds: Array<number>,
   requestGenerateText: Function,
   setGeneratedTextResults: Function,
   generateTextFailed: any,
   generateText: any
+  selectText: Function
 }
 
 const Container: React.FunctionComponent<ContainerProps> = ({
   analysisResults,
   error,
   loading,
+  selectedTextIds,
   requestGenerateText,
   setGeneratedTextResults,
   generateTextFailed,
-  generateText
+  generateText,
+  selectText
   }) => {
-    const [selectedTextIds, setSelectedTextIds] = useState(new Array<number>());
-    console.log("Container state: ", selectedTextIds)
-
-    const onSelectTextId = (id: number) => {
-      if (selectedTextIds.includes(id)) {
-        console.log(`Deselecting ${id}`)
-        // Deselect
-        setSelectedTextIds(selectedTextIds.filter(item => item != id));
-      } else {
-        console.log(`Selecting ${id}`)
-        // Add to selected ids
-        setSelectedTextIds([...selectedTextIds, id]);
-      }
-    }
-
     const getDetailedAnalysisComponent = () => {
       if (selectedTextIds.length == 0) {
         return (<React.Fragment />);
@@ -65,7 +55,7 @@ const Container: React.FunctionComponent<ContainerProps> = ({
             analysisResults={analysisResults}
             loading={loading}
             error={error}
-            onSelectTextId={onSelectTextId}
+            onSelectTextId={selectText}
             selectedTextIds={selectedTextIds} />
           {getDetailedAnalysisComponent()}
         </div>
@@ -78,6 +68,7 @@ function mapStateToProps (state) {
     analysisResults: state.analysisResults,
     error: state.error,
     loading: state.loading,
+    selectedTextIds: state.selectedTextIds,
   };
 }
 
@@ -86,7 +77,8 @@ function mapDispatchToProps (dispatch) {
     requestGenerateText: requestGenerateText,
     setGeneratedTextResults: setGeneratedTextResults,
     generateTextFailed: generateTextFailed,
-    generateText: generateText
+    generateText: generateText,
+    selectText: selectText
   }, dispatch);
  }
 
