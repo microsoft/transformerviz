@@ -11,6 +11,7 @@ type PerspectiveScoresBarChartState = {
 
 type PerspectiveScoresBarChartProps = {
   id: number,
+  width: number,
   scores: any,
   defaultSelectedScore: string
 }
@@ -52,7 +53,7 @@ class PerspectiveScoresBarChart extends Component<PerspectiveScoresBarChartProps
 
     var margin = { top: 5, right: 15, bottom: 50, left: 55 }
     var h = 111 - margin.top - margin.bottom
-    var w = 200;
+    var w = this.props.width;
 
     // SVG
     d3.select(`#${this.domID}`).remove();
@@ -66,7 +67,7 @@ class PerspectiveScoresBarChart extends Component<PerspectiveScoresBarChartProps
         yScale = d3.scaleLinear().range([h, 0]);
 
     var g = svg.append("g")
-               .attr("transform", "translate(" + 55 + "," + margin.top + ")");
+               .attr("transform", "translate(0," + margin.top + ")");
 
     xScale.domain(this.props.scores.map(function(d) { return d.score; }));
     yScale.domain([0.0, 1.0]);
@@ -78,8 +79,8 @@ class PerspectiveScoresBarChart extends Component<PerspectiveScoresBarChartProps
      .attr("transform", "translate(0," + h + ")")
      .append("text")
      .attr("y", 30)
-     .attr("x", (w + margin.left)/2)
-     .attr("text-anchor", "end")
+     .attr("x", w/2)
+     .attr("text-anchor", "middle")
      .attr("fill", "black")
      .attr("font-size", "14px")
      .text(selectedScoreMessage);

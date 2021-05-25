@@ -1,11 +1,5 @@
 import React from "react";
-import * as _ from "lodash"
 import AnalyzedText from "../models/AnalyzedText";
-import ReactDOM from "react-dom";
-import { Fabric } from "office-ui-fabric-react/lib/Fabric";
-import { TextField } from "office-ui-fabric-react/lib/TextField";
-import { DefaultButton } from "office-ui-fabric-react/lib/Button";
-import { List } from "office-ui-fabric-react/lib/List";
 import PerspectiveScoresBarChart from "./PerspectiveScoresBarChart";
 
 type TextGenerationResultsProps = {
@@ -54,6 +48,8 @@ class TextGenerationResults extends React.Component<TextGenerationResultsProps, 
       return resultScores;
     }
 
+    const chartWidth = 140;
+
     return (
       <div>
         <h1 className="mb-4">Generated Results</h1>
@@ -62,8 +58,8 @@ class TextGenerationResults extends React.Component<TextGenerationResultsProps, 
             <div className="flex items-center flex-none px-1" style={{backgroundColor: "#8894B1", color: "white", fontSize: "18px", lineHeight: "20px"}}>
               {item.id}
             </div>
-            <div className="flex-none" style={{width: "140px", border: "solid black 1px"}}>
-              <PerspectiveScoresBarChart id={item.id} scores={getResultScoreObj(item)} defaultSelectedScore="TOXICITY" />
+            <div className="flex-none" style={{width: `${chartWidth}px`, border: "solid black 1px"}}>
+              <PerspectiveScoresBarChart id={item.id} width={chartWidth} scores={getResultScoreObj(item)} defaultSelectedScore="TOXICITY" />
             </div>
             <button 
               className="flex items-center flex-auto text-left px-4"
