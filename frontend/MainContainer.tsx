@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { bindActionCreators } from "redux";
 import { connect } from 'react-redux';
 import {
@@ -36,6 +36,8 @@ const Container: React.FunctionComponent<ContainerProps> = ({
   generateText,
   selectText
   }) => {
+    const [isFolded, setIsFolded] = useState(false);
+
     const getDetailedAnalysisComponent = () => {
       if (selectedTextIds.length == 0) {
         return (<React.Fragment />);
@@ -47,10 +49,18 @@ const Container: React.FunctionComponent<ContainerProps> = ({
       }
     }
 
+    useEffect(() => {
+      const form = document.getElementById("text_gen_form");
+      const grid = document.getElementById("two_column_grid");
+      if (grid) {
+        grid.style.height = `calc(93.5vh - ${form?.offsetHeight}px)`
+      }
+    })
+
     return (
       <div className="m-4 font-sans">
-        <TextGenerationControl generateText={generateText} />
-        <div className="grid grid-cols-2 gap-4">
+        <TextGenerationControl generateText={generateText} onFold={() => setIsFolded(!isFolded)} />
+        <div id="two_column_grid" className="two-column-grid gap-4">
           <TextGenerationResults 
             analysisResults={analysisResults}
             loading={loading}

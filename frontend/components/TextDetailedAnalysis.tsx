@@ -10,7 +10,7 @@ type TextDetailedAnalysisProps = {
   selectedText: AnalyzedText[],
 }
 
-class TextGenerationResults extends React.Component<TextDetailedAnalysisProps, null> {
+class TextDetailedAnalysis extends React.Component<TextDetailedAnalysisProps, null> {
 
   constructor(props) {
     super(props);
@@ -20,7 +20,7 @@ class TextGenerationResults extends React.Component<TextDetailedAnalysisProps, n
     const tabColors = ["#FD8A40", "#60B877", "#F03C92", "#8B3CF0"];
 
     return (
-      <div className="p-3" style={{boxShadow: "0px 0px 12px rgba(0, 0, 0, 0.12)"}}>
+      <div className="page-column p-3" style={{boxShadow: "0px 0px 12px rgba(0, 0, 0, 0.12)"}}>
         <h1 className="mb-4">Toxicity Analysis</h1>
         <div className="mb-4 text-2xl">
           <PerspectiveScoresSpiderChart
@@ -56,4 +56,4 @@ class TextGenerationResults extends React.Component<TextDetailedAnalysisProps, n
   }
 }
 
-export default TextGenerationResults;
+export default TextDetailedAnalysis;

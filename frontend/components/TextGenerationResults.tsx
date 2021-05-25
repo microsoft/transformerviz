@@ -75,7 +75,8 @@ class TextGenerationResults extends React.Component<TextGenerationResultsProps, 
     const chartWidth = 140;
 
     return (
-      <div>
+      <div className="page-column">
+        <div className="scroll-pane">
         <h1>Generated Results</h1>
         <Stack horizontal horizontalAlign="end" tokens={{childrenGap: 20}} styles={{root: {marginBottom: "16px"}}}>
           <ComboBox
@@ -106,6 +107,7 @@ class TextGenerationResults extends React.Component<TextGenerationResultsProps, 
             </button>
           </div>
         )}
+        </div>
       </div>
     );
   }
