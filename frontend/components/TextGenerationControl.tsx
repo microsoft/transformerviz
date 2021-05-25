@@ -38,7 +38,7 @@ class TextGenerationControl extends React.Component<
       isFolded: false,
       minLength: 10,
       maxLength: 70,
-      topK: 50,
+      topK: 0,
       topP: 0.8,
       temperature: 1.0,
       numBeams: 1,
