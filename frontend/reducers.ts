@@ -13,7 +13,7 @@ function rootReducer(state = initialState, action) {
 
     switch(action.type) {
         case "REQUEST_GENERATE_TEXT":
-          return Object.assign({}, state, {loading: true, error: null});
+          return Object.assign({}, state, {loading: true, error: null, analysisResults: [], selectedTextIds: []});
 
         case "REQUEST_GENERATE_TEXT_FAILED":
           return Object.assign({}, state, {loding: false, error: action.error});
