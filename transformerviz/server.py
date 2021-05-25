@@ -92,6 +92,6 @@ def generate_text():
         num_beams=num_beams)
     analyzed_sentences = perspective_api_client.analyze_sentences(generated_sentences)
     analyzed_sentences_with_ids = list(map(
-        lambda analyzed_sentence_id_tuple: {"id": analyzed_sentence_id_tuple[0], "text": analyzed_sentence_id_tuple[1]["text"], "perspective": analyzed_sentence_id_tuple[1]["perspective"]},
+        lambda analyzed_sentence_id_tuple: {"id": analyzed_sentence_id_tuple[0] + 1, "text": analyzed_sentence_id_tuple[1]["text"], "perspective": analyzed_sentence_id_tuple[1]["perspective"]},
         enumerate(analyzed_sentences)))
     return {"text_generation_results": analyzed_sentences_with_ids}

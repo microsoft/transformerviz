@@ -20,3 +20,8 @@ h1 {
   font-weight: 600;
   line-height: 20px;
 }
+
+.plot-spider {
+  display: flex;
+  justify-content: center;
+}
