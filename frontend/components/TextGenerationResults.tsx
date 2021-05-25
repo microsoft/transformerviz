@@ -95,7 +95,7 @@ class TextGenerationResults extends React.Component<TextGenerationResultsProps, 
             <div className="flex items-center flex-none px-1" style={{backgroundColor: "#8894B1", color: "white", fontSize: "18px", lineHeight: "20px"}}>
               {item.id}
             </div>
-            <div className="flex-none" style={{width: `${chartWidth}px`, border: "solid black 1px"}}>
+            <div className="flex-none" style={{width: `${chartWidth}px`, border: "solid #E7E7E7 1px"}}>
               <PerspectiveScoresBarChart id={item.id} width={chartWidth} scores={getResultScoreObj(item)} defaultSelectedScore="TOXICITY" />
             </div>
             <button 
