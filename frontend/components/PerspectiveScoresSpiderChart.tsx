@@ -51,35 +51,40 @@ class PerspectiveScoresSpiderChart extends Component<PerspectiveScoresSpiderChar
     var svg = body.append('svg')
         .attr('id', this.domID)
         .attr('height', 310)
-        .attr('width', 310)
+        .attr('width', 400)
         .attr('float', 'left');
 
     var radialScale = d3.scaleLinear()
         .domain([0.0, 1.0])
         .range([0,100]);
-    var ticks = [0.0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0];
+    var ticks = [0.0, 0.2, 0.4, 0.6, 0.8, 1.0];
 
     ticks.map(t =>
         svg.append("circle")
-        .attr("cx", 155)
+        .attr("cx", 200)
         .attr("cy", 155)
         .attr("fill", "none")
-        .attr("stroke", "gray")
+        .attr("stroke", "rgba(224, 224, 224, 1)")
+        .attr("stroke-width", "1px")
         .attr("r", radialScale(t))
-    );
-
-    ticks.map(t =>
-        svg.append("text")
-        .attr("x", 160)
-        .attr("y", 155 - radialScale(t))
-        .attr("font-size", "8px")
-        .text(t.toString())
     );
 
     const angleToCoordinate = (angle: number, value: number) => {
         let x = Math.cos(angle) * radialScale(value);
         let y = Math.sin(angle) * radialScale(value);
-        return {"x": 155 + x, "y": 155 - y};
+        return {"x": 200 + x, "y": 155 - y};
+    }
+
+    const getLabelOffset = (index: number, label: string) => {
+      if (index == 1 || index == 2) {
+        return {"x":  -(label.length) * 5, "y": 0.0};
+      } else if (index == 3) {
+        return {"x":  -(label.length) * 5, "y": 6};
+      } else if (index == 4 || index == 5) {
+        return {"x": 0.0, "y": 12};
+      } else {
+        return {"x": 0.0, "y": 0.0};
+      }
     }
 
     for (var i = 0; i < this.props.axes.length; i++) {
@@ -87,19 +92,21 @@ class PerspectiveScoresSpiderChart extends Component<PerspectiveScoresSpiderChar
         let angle = (Math.PI / 2) + (2 * Math.PI * i / this.props.axes.length);
         let line_coordinate = angleToCoordinate(angle, 1.0);
         let label_coordinate = angleToCoordinate(angle, 1.05);
+        let label_offset = getLabelOffset(i, axisName);
 
         //draw axis line
         svg.append("line")
-        .attr("x1", 155)
+        .attr("x1", 200)
         .attr("y1", 155)
         .attr("x2", line_coordinate.x)
         .attr("y2", line_coordinate.y)
-        .attr("stroke","black");
+        .attr("stroke","rgba(224, 224, 224, 1)")
+        .attr("stroke-width", "1px");
 
         //draw axis label
         svg.append("text")
-        .attr("x", label_coordinate.x)
-        .attr("y", label_coordinate.y)
+        .attr("x", label_coordinate.x + label_offset.x)
+        .attr("y", label_coordinate.y + label_offset.y)
         .attr("font-size", "12px")
         .text(axisName);
     }
@@ -116,6 +123,10 @@ class PerspectiveScoresSpiderChart extends Component<PerspectiveScoresSpiderChar
             let angle = (Math.PI / 2) + (2 * Math.PI * i / this.props.axes.length);
             coordinates.push(angleToCoordinate(angle, scoreData[axisFeatureName]));
         }
+        let axisFeatureName = this.props.axes[0][1];
+        let angle = (Math.PI / 2) + (2 * Math.PI * i / this.props.axes.length);
+        coordinates.push(angleToCoordinate(angle, scoreData[axisFeatureName]));
+
         return coordinates;
     }
 
@@ -128,20 +139,18 @@ class PerspectiveScoresSpiderChart extends Component<PerspectiveScoresSpiderChar
         svg.append("path")
         .datum(coordinates)
         .attr("d",line)
-        .attr("stroke-width", 3)
+        .attr("stroke-width", 2)
         .attr("stroke", color)
-        .attr("fill", color)
         .attr("stroke-opacity", 1)
-        .attr("opacity", 0.5);
+        .attr("fill", color)
+        .attr("fill-opacity", 0.5);
     }
 
   }
 
   render() {
     return (
-      <div className="plot plot-distribution">
-        <div ref={this.node}/>
-      </div>
+       <div className="plot plot-spider" ref={this.node}/>
     );
   }
 }
