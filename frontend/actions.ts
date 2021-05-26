@@ -30,6 +30,12 @@ function generateText(config) {
     }
 }
 
+function foldForm() {
+  return {
+    type: "FOLD_FORM"
+  }
+}
+
 function selectText(id: number) {
   return {
     type: "SELECT_TEXT",
@@ -44,4 +50,5 @@ export {
   generateTextFailed,
   generateText,
   selectText,
+  foldForm,
 };

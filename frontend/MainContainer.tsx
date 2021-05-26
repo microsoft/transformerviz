@@ -6,7 +6,8 @@ import {
   setGeneratedTextResults,
   generateTextFailed,
   generateText,
-  selectText
+  selectText,
+  foldForm
 } from './actions';
 import TextGenerationControl from "./components/TextGenerationControl";
 import TextGenerationResults from "./components/TextGenerationResults";
@@ -17,27 +18,29 @@ type ContainerProps = {
   analysisResults: AnalyzedText[],
   error: any,
   loading: any,
+  isFolded: boolean,
   selectedTextIds: Array<number>,
   requestGenerateText: Function,
   setGeneratedTextResults: Function,
   generateTextFailed: any,
   generateText: any
-  selectText: Function
+  selectText: Function,
+  foldForm: Function
 }
 
 const Container: React.FunctionComponent<ContainerProps> = ({
   analysisResults,
   error,
   loading,
+  isFolded,
   selectedTextIds,
   requestGenerateText,
   setGeneratedTextResults,
   generateTextFailed,
   generateText,
-  selectText
+  selectText,
+  foldForm
   }) => {
-    const [isFolded, setIsFolded] = useState(false);
-
     const getDetailedAnalysisComponent = () => {
       if (selectedTextIds.length == 0) {
         return (<React.Fragment />);
@@ -59,7 +62,7 @@ const Container: React.FunctionComponent<ContainerProps> = ({
 
     return (
       <div className="m-4 font-sans">
-        <TextGenerationControl generateText={generateText} onFold={() => setIsFolded(!isFolded)} />
+        <TextGenerationControl generateText={generateText} onFold={() => foldForm()} isFolded={isFolded} />
         <div id="two_column_grid" className="two-column-grid gap-4">
           <TextGenerationResults 
             analysisResults={analysisResults}
@@ -79,6 +82,7 @@ function mapStateToProps (state) {
     error: state.error,
     loading: state.loading,
     selectedTextIds: state.selectedTextIds,
+    isFolded: state.isFolded
   };
 }
 
@@ -88,7 +92,8 @@ function mapDispatchToProps (dispatch) {
     setGeneratedTextResults: setGeneratedTextResults,
     generateTextFailed: generateTextFailed,
     generateText: generateText,
-    selectText: selectText
+    selectText: selectText,
+    foldForm: foldForm,
   }, dispatch);
  }
 
