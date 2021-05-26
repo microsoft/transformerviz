@@ -2,6 +2,7 @@ import React from "react";
 import { ComboBox, IComboBoxOption, Stack } from "office-ui-fabric-react"
 import AnalyzedText from "../models/AnalyzedText";
 import PerspectiveScoresBarChart from "./PerspectiveScoresBarChart";
+import { IconSortDescending, IconSortAscending } from '@tabler/icons';
 
 type TextGenerationResultsProps = {
   analysisResults: AnalyzedText[],
@@ -14,7 +15,8 @@ type TextGenerationResultsProps = {
 type TextGenerationResultsState = {
   analysisResults: AnalyzedText[],
   highlightScoreLabel: string,
-  sortByLabel: string
+  sortByLabel: string,
+  sortDescending: boolean,
 }
 
 class TextGenerationResults extends React.Component<TextGenerationResultsProps, TextGenerationResultsState> {
@@ -25,7 +27,8 @@ class TextGenerationResults extends React.Component<TextGenerationResultsProps, 
     this.state = {
       analysisResults: props.analysisResults,
       highlightScoreLabel: "toxicity",
-      sortByLabel: "none"
+      sortByLabel: "none",
+      sortDescending: true
     }
   }
 
@@ -110,6 +113,14 @@ class TextGenerationResults extends React.Component<TextGenerationResultsProps, 
       { key: 'flirtation', text: 'Flirtation' },
     ];
 
+    const getSortClass = (enabled: boolean) => {
+      if (enabled) {
+        return "sort-button";
+      } else {
+        return "sort-button disabled-button";
+      }
+    }
+
     const chartWidth = 140;
 
     return (
@@ -117,6 +128,10 @@ class TextGenerationResults extends React.Component<TextGenerationResultsProps, 
         <div className="scroll-pane">
         <h1>Generated Results</h1>
         <Stack horizontal horizontalAlign="end" tokens={{childrenGap: 20}} styles={{root: {marginBottom: "16px"}}}>
+          <div className="flex items-end">
+            <button className={getSortClass(this.state.sortDescending)} onClick={() => this.setState({sortDescending: true})} ><IconSortDescending size={30} /></button>
+            <button className={getSortClass(!this.state.sortDescending)} onClick={() => this.setState({sortDescending: false})} ><IconSortAscending size={30} /></button>
+          </div>
           <ComboBox
             label="Sort by"
             options={sortOptions}

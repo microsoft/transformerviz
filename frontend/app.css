@@ -59,3 +59,15 @@ h1 {
 .page-column {
   overflow-y: scroll;
 }
+
+.sort-button {
+  background: #FFFFFF;
+  border: 1px solid #167DF5;
+  box-sizing: border-box;
+  border-radius: 2px;
+}
+
+.sort-button.disabled-button {
+  background: #EFF2F4;
+  border: solid #EFF2F4 1px;
+}

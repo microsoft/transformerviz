@@ -45,9 +45,10 @@ const Container: React.FunctionComponent<ContainerProps> = ({
       if (selectedTextIds.length == 0) {
         return (<React.Fragment />);
       } else {
+        const selectedText = selectedTextIds.map(id => analysisResults.find(item => id == item.id))
         return (
           <TextDetailedAnalysis
-            selectedText={analysisResults.filter(item => selectedTextIds.includes(item.id))} />
+            selectedText={selectedText} />
         );
       }
     }
