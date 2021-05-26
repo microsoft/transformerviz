@@ -1,5 +1,6 @@
 {
   "dependencies": {
+    "@tabler/icons": "^1.41.2",
     "@types/lodash": "^4.14.169",
     "axios": "^0.21.1",
     "d3": "^5.16.0",

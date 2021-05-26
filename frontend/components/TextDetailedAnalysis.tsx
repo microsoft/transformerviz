@@ -17,7 +17,7 @@ class TextDetailedAnalysis extends React.Component<TextDetailedAnalysisProps, nu
   }
 
   render() {
-    const tabColors = ["#FD8A40", "#60B877", "#F03C92", "#8B3CF0"];
+    const tabColors = ["#FD6D22", "#3AA757", "#ED4596", "#752BEE", "#4DBDC5", "#FABB2D", "#3C85FA", "#FF4C4C"];
 
     return (
       <div className="page-column p-3" style={{boxShadow: "0px 0px 12px rgba(0, 0, 0, 0.12)"}}>
