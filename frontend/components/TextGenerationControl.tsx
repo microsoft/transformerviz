@@ -9,6 +9,8 @@ import { FiChevronUp, FiChevronDown } from "react-icons/fi";
 
 type TextGenerationControlProps = {
   generateText: Function;
+  onFold: Function;
+  isFolded: boolean;
 };
 
 type TextGenerationControlState = {
@@ -16,7 +18,6 @@ type TextGenerationControlState = {
   model: string;
   doSample: boolean;
   earlyStopping: boolean;
-  isFolded: boolean;
   minLength: number;
   maxLength: number;
   topK: number;
@@ -36,7 +37,6 @@ class TextGenerationControl extends React.Component<
       model: "gpt2",
       doSample: true,
       earlyStopping: false,
-      isFolded: false,
       minLength: 10,
       maxLength: 70,
       topK: 0,
@@ -122,16 +122,14 @@ class TextGenerationControl extends React.Component<
   };
 
   toggleFold = () => {
-    this.setState({
-      isFolded: !this.state.isFolded
-    });
+    this.props.onFold();
   }
 
   render() {
     const textFieldStyle = {root: {width: "110px", display: "inline-block"}};
-    if (this.state.isFolded) {
+    if (this.props.isFolded) {
       return (
-        <div
+        <div id="text_gen_form"
           style={{
               backgroundColor: "white",
               paddingLeft: "24px",
@@ -159,7 +157,7 @@ class TextGenerationControl extends React.Component<
       )
     } else {
       return (
-        <div
+        <div id="text_gen_form"
           style={{
               backgroundColor: "white",
               paddingLeft: "24px",

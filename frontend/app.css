@@ -4,6 +4,8 @@ html {
 
 body {
   min-height: 100%;
+  max-height: 100vh;
+  overflow: hidden;
 }
 
 .bar {
@@ -44,4 +46,16 @@ h1 {
 
 .ms-Checkbox-label {
   font-weight: 600;
+}
+
+.two-column-grid {
+  width: 100%;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: 1fr;
+  align-items: stretch;
+}
+
+.page-column {
+  overflow-y: scroll;
 }

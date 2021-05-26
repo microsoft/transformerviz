@@ -5,6 +5,7 @@ const rawInitialState = {
    selectedTextIds: [],
    error: null,
    loading: false,
+   isFolded: false
 }
 
 const initialState = window["APP_STATE"] || rawInitialState;
@@ -31,6 +32,9 @@ function rootReducer(state = initialState, action) {
             textIds = [...textIds, id];
           }
           return Object.assign({}, state, {selectedTextIds: textIds});
+        
+        case "FOLD_FORM":
+          return Object.assign({}, state, {isFolded: !state.isFolded});
 
         default:
             return state
