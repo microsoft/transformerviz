@@ -12,7 +12,6 @@ def generate_sentences_hf(tokenizer, model, context,
                           num_return_sequences=10):
     context = context.strip()
     input_ids = tokenizer.encode(context, return_tensors='pt')
-    input_tokenized_length = input_ids.size(1)
 
     # If num_beams is greater than 1, then the number of return sequences
     # needs to be lesser than or equal to the number of beams.
@@ -46,11 +45,12 @@ def generate_sentences_hf(tokenizer, model, context,
 
 class TextGenerator(object):
 
-    def __init__(self, model_name):
+    def __init__(self, model_name, num_return_sequences=10):
         self.tokenizer = AutoTokenizer.from_pretrained(model_name)
         self.model = AutoModelForCausalLM.from_pretrained(
             model_name,
             pad_token_id=self.tokenizer.eos_token_id)
+        self.num_return_sequences = num_return_sequences
 
     def generate_text(self, prompt,
                       do_sample=False, early_stopping=False,
@@ -61,7 +61,8 @@ class TextGenerator(object):
             do_sample=do_sample, early_stopping=early_stopping,
             min_length=min_length, max_length=max_length,
             top_k=top_k, top_p=top_p,
-            temperature=temperature, num_beams=num_beams)
+            temperature=temperature, num_beams=num_beams,
+            num_return_sequences=self.num_return_sequences)
 
         return results
 
@@ -89,10 +90,76 @@ class PerspectiveAPIClient(object):
                 "comment": {"text": sentence},
                 "requestedAttributes": self.requested_attributes
             }
-            response = self.client.comments().analyze(body=analyze_request).execute()
-            results.append({
-                "text": sentence,
-                "perspective": response
-            })
+            try:
+                response = self.client.comments().analyze(body=analyze_request).execute()
+                results.append({
+                    "text": sentence,
+                    "perspective": response
+                })
+            except Exception:
+                default_perspective_response = {
+                    "attributeScores": {
+                        "THREAT": {
+                            "spanScores": [],
+                            "summaryScore": {
+                                "value": 0.0,
+                                "type": "PROBABILITY"
+                            }
+                        },
+                        "IDENTITY_ATTACK": {
+                            "spanScores": [],
+                            "summaryScore": {
+                                "value": 0.0,
+                                "type": "PROBABILITY"
+                            }
+                        },
+                        "SEXUALLY_EXPLICIT": {
+                            "spanScores": [],
+                            "summaryScore": {
+                                "value": 0.0,
+                                "type": "PROBABILITY"
+                            }
+                        },
+                        "SEVERE_TOXICITY": {
+                            "spanScores": [],
+                            "summaryScore": {
+                                "value": 0.0,
+                                "type": "PROBABILITY"
+                            }
+                        },
+                        "TOXICITY": {
+                            "spanScores": [],
+                            "summaryScore": {
+                                "value": 0.0,
+                                "type": "PROBABILITY"
+                            }
+                        },
+                        "INSULT": {
+                            "spanScores": [],
+                            "summaryScore": {
+                                "value": 0.0,
+                                "type": "PROBABILITY"
+                            }
+                        },
+                        "FLIRTATION": {
+                            "spanScores": [],
+                            "summaryScore": {
+                                "value": 0.0,
+                                "type": "PROBABILITY"
+                            }
+                        },
+                        "PROFANITY": {
+                            "spanScores": [],
+                            "summaryScore": {
+                                "value": 0.0,
+                                "type": "PROBABILITY"
+                            }
+                        }
+                    }
+                }
+                results.append({
+                    "text": sentence,
+                    "perspective": default_perspective_response
+                })
 
         return results

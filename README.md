@@ -44,6 +44,6 @@ Any use of third-party trademarks or logos are subject to those third-party's po
 
 ## Running
 
-- `PERSPECTIVE_API_KEY=<perspective-api-key> TRANSFORMERS_CACHE=<path-to-transformers-cache> FLASK_APP=transformerviz/server.py flask run --host 0.0.0.0 --port 5000` (The `TRANSFORMERS_CACHE` environment variable is optional).
+- `PERSPECTIVE_API_KEY=<perspective-api-key> GPT2_MODEL_VERSION=<gpt2-model-version> NUM_RETURN_SEQUENCES=<number-of-return-sequences> TRANSFORMERS_CACHE=<path-to-transformers-cache> FLASK_APP=transformerviz/server.py flask run --host 0.0.0.0 --port 5000` (The `TRANSFORMERS_CACHE` environment variable is optional).
 - Point your browser to port 5000 of the server on which the app is running.
 

@@ -12,7 +12,9 @@ app = Flask(__name__)
 CORS(app)
 
 text_generators = {
-    "gpt2": utils.TextGenerator("gpt2")
+    "gpt2": utils.TextGenerator(
+        os.environ.get("GPT2_MODEL_VERSION", "gpt2"),
+        num_return_sequences=int(os.environ.get("NUM_RETURN_SEQUENCES", 10)))
 }
 
 perspective_api_client = utils.PerspectiveAPIClient(
@@ -95,3 +97,12 @@ def generate_text():
         lambda analyzed_sentence_id_tuple: {"id": analyzed_sentence_id_tuple[0] + 1, "text": analyzed_sentence_id_tuple[1]["text"], "perspective": analyzed_sentence_id_tuple[1]["perspective"]},
         enumerate(analyzed_sentences)))
     return {"text_generation_results": analyzed_sentences_with_ids}
+
+
+@app.route("/api/v1/analyze_text", methods=["POST"])
+def analyze_text():
+    request_json = request.json
+    text = request_json.get("text", "")
+    analyzed_sentence = perspective_api_client.analyze_sentences(text).pop()
+
+    return {"text_analysis_result": analyzed_sentence}
