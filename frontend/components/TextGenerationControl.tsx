@@ -47,18 +47,20 @@ class TextGenerationControl extends React.Component<
   }
 
   generateTextClickHandler = () => {
-    this.props.generateText({
-      prompt: this.state.textGenerationPrompt,
-      model: this.state.model,
-      do_sample: this.state.doSample,
-      early_stopping: this.state.earlyStopping,
-      min_length: this.state.minLength,
-      max_length: this.state.maxLength,
-      top_k: this.state.topK,
-      top_p: this.state.topP,
-      temperature: this.state.temperature,
-      num_beams: this.state.numBeams,
-    });
+    if (this.state.textGenerationPrompt.trim().length != 0) {
+      this.props.generateText({
+        prompt: this.state.textGenerationPrompt,
+        model: this.state.model,
+        do_sample: this.state.doSample,
+        early_stopping: this.state.earlyStopping,
+        min_length: this.state.minLength,
+        max_length: this.state.maxLength,
+        top_k: this.state.topK,
+        top_p: this.state.topP,
+        temperature: this.state.temperature,
+        num_beams: this.state.numBeams,
+      });
+    }
   };
 
   onTextPromptChange = (evt) => {

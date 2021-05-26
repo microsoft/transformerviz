@@ -11,13 +11,66 @@ type TextGenerationResultsProps = {
   error?: any
 }
 
-class TextGenerationResults extends React.Component<TextGenerationResultsProps, null> {
+type TextGenerationResultsState = {
+  analysisResults: AnalyzedText[],
+  highlightScoreLabel: string,
+  sortByLabel: string
+}
+
+class TextGenerationResults extends React.Component<TextGenerationResultsProps, TextGenerationResultsState> {
 
   constructor(props) {
     super(props);
+
+    this.state = {
+      analysisResults: props.analysisResults,
+      highlightScoreLabel: "toxicity",
+      sortByLabel: "none"
+    }
+  }
+
+  componentWillReceiveProps(nextProps) {
+    this.setState({
+      analysisResults: nextProps.analysisResults
+    });
+  }
+
+  sortGeneratedTextResults(scoreLabel) {
+    if (scoreLabel == "none") {
+      this.setState({
+        sortByLabel: scoreLabel,
+        analysisResults: this.props.analysisResults
+      });
+    } else {
+      const sortedAnalysisResults = this.state.analysisResults.map((result) => result).sort((resultA, resultB) => {
+        if (resultA[scoreLabel] < resultB[scoreLabel]) {
+          return -1;
+        } else if (resultA[scoreLabel] == resultB[scoreLabel]) {
+          return 0;
+        } else {
+          return 1;
+        }
+      });
+
+      this.setState({
+        sortByLabel: scoreLabel,
+        analysisResults: sortedAnalysisResults
+      });
+    }
+  }
+
+  setHighlightedScoreLabel(scoreLabel) {
+    if (scoreLabel != this.state.highlightScoreLabel) {
+      this.setState({
+        analysisResults: this.props.analysisResults,
+        highlightScoreLabel: scoreLabel,
+        sortByLabel: "none"
+      });
+    }
   }
 
   render() {
+    console.log(this.state);
 
     if (this.props.error != null) {
       return (
@@ -34,41 +87,26 @@ class TextGenerationResults extends React.Component<TextGenerationResultsProps, 
       );
     }
 
-    const getResultScoreObj: any = (item: any) => {
-      let resultScores = [
-        {score: "TOXICITY", value: item.toxicity, scoreName: "Toxicity"},
-        {score: "SEVERE_TOXICITY", value: item.severeToxicity, scoreName: "Severe Toxicity"},
-        {score: "IDENTITY_ATTACK", value: item.identityAttack, scoreName: "Identity Attack"},
-        {score: "INSULT", value: item.insult, scoreName: "Insult"},
-        {score: "PROFANITY", value: item.profanity, scoreName: "Profanity"},
-        {score: "THREAT", value: item.threat, scoreName: "Threat"},
-        {score: "SEXUALLY_EXPLICIT", value: item.sexuallyExplicit, scoreName: "Sexually Explicit"},
-        {score: "FLIRTATION", value: item.flirtation, scoreName: "Flirtation"}
-      ];
-
-      return resultScores;
-    }
-
     const sortOptions: IComboBoxOption[] = [
+      { key: 'none', text: 'None'},
       { key: 'toxicity', text: 'Toxicity' },
-      { key: 'severe', text: 'Severe Toxicity' },
+      { key: 'severeToxicity', text: 'Severe Toxicity' },
       { key: 'identity', text: 'Identity Attack' },
       { key: 'insult', text: 'Insult' },
       { key: 'profanity', text: 'Profanity' },
       { key: 'threat', text: 'Threat' },
-      { key: 'sexually', text: 'Sexually Explicit' },
+      { key: 'sexuallyExplicit', text: 'Sexually Explicit' },
       { key: 'flirtation', text: 'Flirtation' },
     ];
 
     const scoreOptions: IComboBoxOption[] = [
-      { key: 'all', text: 'All Scores' },
       { key: 'toxicity', text: 'Toxicity' },
-      { key: 'severe', text: 'Severe Toxicity' },
-      { key: 'identity', text: 'Identity Attack' },
+      { key: 'severeToxicity', text: 'Severe Toxicity' },
+      { key: 'identityAttack', text: 'Identity Attack' },
       { key: 'insult', text: 'Insult' },
       { key: 'profanity', text: 'Profanity' },
       { key: 'threat', text: 'Threat' },
-      { key: 'sexually', text: 'Sexually Explicit' },
+      { key: 'sexuallyExplicit', text: 'Sexually Explicit' },
       { key: 'flirtation', text: 'Flirtation' },
     ];
 
@@ -83,20 +121,28 @@ class TextGenerationResults extends React.Component<TextGenerationResultsProps, 
             label="Sort by"
             options={sortOptions}
             styles={{root: {maxWidth: 160}}}
+            selectedKey={this.state.sortByLabel}
+            onChange={(evt, option) => {
+              this.sortGeneratedTextResults(option.key);
+            }}
           />
           <ComboBox
             label="Show score"
             options={scoreOptions}
             styles={{root: {maxWidth: 160}}}
+            selectedKey={this.state.highlightScoreLabel}
+            onChange={(evt, option) => {
+              this.setHighlightedScoreLabel(option.key);
+            }}
           />
         </Stack>
-        {this.props.analysisResults.map((item) => 
+        {this.state.analysisResults.map((item) => 
           <div className="flex items-stretch mb-4" style={{minHeight: "110px", border: this.props.selectedTextIds.includes(item.id) ? "solid #167DF5 2px" : "none"}}>
             <div className="flex items-center flex-none px-1" style={{backgroundColor: "#8894B1", color: "white", fontSize: "18px", lineHeight: "20px"}}>
               {item.id}
             </div>
             <div className="flex-none" style={{width: `${chartWidth}px`, border: "solid #E7E7E7 1px"}}>
-              <PerspectiveScoresBarChart id={item.id} width={chartWidth} scores={getResultScoreObj(item)} defaultSelectedScore="TOXICITY" />
+              <PerspectiveScoresBarChart id={item.id} width={chartWidth} analyzedText={item} defaultSelectedScore={this.state.highlightScoreLabel} />
             </div>
             <button 
               className="flex items-center flex-auto text-left px-4"

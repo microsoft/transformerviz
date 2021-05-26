@@ -3,6 +3,7 @@ import ReactDOM from "react-dom";
 import * as d3 from "d3";
 import { DirectionalHint } from 'office-ui-fabric-react/lib/Tooltip';
 import { PrimaryButton, DefaultButton } from 'office-ui-fabric-react/lib/Button';
+import AnalyzedText from "../models/AnalyzedText";
 
 
 type PerspectiveScoresBarChartState = {
@@ -12,8 +13,8 @@ type PerspectiveScoresBarChartState = {
 type PerspectiveScoresBarChartProps = {
   id: number,
   width: number,
-  scores: any,
-  defaultSelectedScore: string
+  defaultSelectedScore: string,
+  analyzedText: AnalyzedText
 }
 
 class PerspectiveScoresBarChart extends Component<PerspectiveScoresBarChartProps, PerspectiveScoresBarChartState> {
@@ -41,6 +42,12 @@ class PerspectiveScoresBarChart extends Component<PerspectiveScoresBarChartProps
     this.createDistributionBarChart();
   }
 
+  componentWillReceiveProps(nextProps) {
+    this.setState({
+      selectedScore: nextProps.defaultSelectedScore
+    });
+  }
+
   setSelectedScore = (selectedScore: string) => {
     this.setState({
       selectedScore: selectedScore
@@ -50,6 +57,23 @@ class PerspectiveScoresBarChart extends Component<PerspectiveScoresBarChartProps
   createDistributionBarChart = () => {
     var _this = this;
     var body = d3.select(this.node.current);
+
+    const getResultScoreObj: any = (item: any) => {
+      let resultScores = [
+        {label: "toxicity", value: item.toxicity, scoreName: "Toxicity"},
+        {label: "severeToxicity", value: item.severeToxicity, scoreName: "Severe Toxicity"},
+        {label: "identityAttack", value: item.identityAttack, scoreName: "Identity Attack"},
+        {label: "insult", value: item.insult, scoreName: "Insult"},
+        {label: "profanity", value: item.profanity, scoreName: "Profanity"},
+        {label: "threat", value: item.threat, scoreName: "Threat"},
+        {label: "sexuallyExplicit", value: item.sexuallyExplicit, scoreName: "Sexually Explicit"},
+        {label: "flirtation", value: item.flirtation, scoreName: "Flirtation"}
+      ];
+
+      return resultScores;
+    }
+
+    var scores = getResultScoreObj(this.props.analyzedText);
 
     var margin = { top: 5, right: 15, bottom: 50, left: 55 }
     var h = 111 - margin.top - margin.bottom
@@ -69,10 +93,10 @@ class PerspectiveScoresBarChart extends Component<PerspectiveScoresBarChartProps
     var g = svg.append("g")
                .attr("transform", "translate(0," + margin.top + ")");
 
-    xScale.domain(this.props.scores.map(function(d) { return d.score; }));
+    xScale.domain(scores.map(function(d) { return d.label; }));
     yScale.domain([0.0, 1.0]);
 
-    var selectedScoreObj = this.props.scores.filter(scoreObj => (scoreObj.score == this.state.selectedScore))[0];
+    var selectedScoreObj = scores.filter(scoreObj => (scoreObj.label == this.state.selectedScore))[0];
     var selectedScoreMessage = `${selectedScoreObj.scoreName}: ${selectedScoreObj.value.toFixed(2)}`;
 
     g.append("g")
@@ -86,16 +110,16 @@ class PerspectiveScoresBarChart extends Component<PerspectiveScoresBarChartProps
      .text(selectedScoreMessage);
 
     g.selectAll(".bar")
-     .data(this.props.scores)
+     .data(scores)
      .enter().append("rect")
      .attr("class", "bar")
-     .attr("x", function(d) { return xScale(d.score); })
+     .attr("x", function(d) { return xScale(d.label); })
      .attr("y", function(d) { return yScale(d.value); })
      .attr("width", xScale.bandwidth())
      .attr("height", function(d) { return h - yScale(d.value); })
-     .classed("highlighted-bar", function(d) { return d.score == _this.state.selectedScore })
+     .classed("highlighted-bar", function(d) { return d.label == _this.state.selectedScore })
      .on("click", function(d) {
-       _this.setSelectedScore(d.score);
+       _this.setSelectedScore(d.label);
      });
   }
 

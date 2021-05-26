@@ -69,7 +69,8 @@ const Container: React.FunctionComponent<ContainerProps> = ({
             loading={loading}
             error={error}
             onSelectTextId={selectText}
-            selectedTextIds={selectedTextIds} />
+            selectedTextIds={selectedTextIds}
+          />
           {getDetailedAnalysisComponent()}
         </div>
       </div>
