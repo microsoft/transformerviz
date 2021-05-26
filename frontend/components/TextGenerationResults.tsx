@@ -38,14 +38,14 @@ class TextGenerationResults extends React.Component<TextGenerationResultsProps, 
     });
   }
 
-  sortGeneratedTextResults(scoreLabel) {
+  sortGeneratedTextResults(scoreLabel, sortDescending) {
     if (scoreLabel == "none") {
       this.setState({
         sortByLabel: scoreLabel,
         analysisResults: this.props.analysisResults
       });
-    } else {
-      const sortedAnalysisResults = this.state.analysisResults.map((result) => result).sort((resultA, resultB) => {
+    } else if (sortDescending) {
+      const sortedAnalysisResultsDescending = this.state.analysisResults.map((result) => result).sort((resultA, resultB) => {
         if (resultA[scoreLabel] < resultB[scoreLabel]) {
           return -1;
         } else if (resultA[scoreLabel] == resultB[scoreLabel]) {
@@ -57,7 +57,22 @@ class TextGenerationResults extends React.Component<TextGenerationResultsProps, 
 
       this.setState({
         sortByLabel: scoreLabel,
-        analysisResults: sortedAnalysisResults
+        analysisResults: sortedAnalysisResultsDescending
+      });
+    } else if (!sortDescending) {
+      const sortedAnalysisResultsAscending = this.state.analysisResults.map((result) => result).sort((resultA, resultB) => {
+        if (resultA[scoreLabel] < resultB[scoreLabel]) {
+          return 1;
+        } else if (resultA[scoreLabel] == resultB[scoreLabel]) {
+          return 0;
+        } else {
+          return -1;
+        }
+      });
+
+      this.setState({
+        sortByLabel: scoreLabel,
+        analysisResults: sortedAnalysisResultsAscending
       });
     }
   }
@@ -72,9 +87,21 @@ class TextGenerationResults extends React.Component<TextGenerationResultsProps, 
     }
   }
 
-  render() {
-    console.log(this.state);
+  sortDescending() {
+    this.setState({
+      sortDescending: true
+    });
+    this.sortGeneratedTextResults(this.state.sortByLabel, true);
+  }
 
+  sortAscending() {
+    this.setState({
+      sortDescending: false
+    });
+    this.sortGeneratedTextResults(this.state.sortByLabel, false);
+  }
+
+  render() {
     if (this.props.error != null) {
       return (
         <div>Error generating text.</div>
@@ -94,7 +121,7 @@ class TextGenerationResults extends React.Component<TextGenerationResultsProps, 
       { key: 'none', text: 'None'},
       { key: 'toxicity', text: 'Toxicity' },
       { key: 'severeToxicity', text: 'Severe Toxicity' },
-      { key: 'identity', text: 'Identity Attack' },
+      { key: 'identityAttack', text: 'Identity Attack' },
       { key: 'insult', text: 'Insult' },
       { key: 'profanity', text: 'Profanity' },
       { key: 'threat', text: 'Threat' },
@@ -129,8 +156,8 @@ class TextGenerationResults extends React.Component<TextGenerationResultsProps, 
         <h1>Generated Results</h1>
         <Stack horizontal horizontalAlign="end" tokens={{childrenGap: 20}} styles={{root: {marginBottom: "16px"}}}>
           <div className="flex items-end">
-            <button className={getSortClass(this.state.sortDescending)} onClick={() => this.setState({sortDescending: true})} ><IconSortDescending size={30} /></button>
-            <button className={getSortClass(!this.state.sortDescending)} onClick={() => this.setState({sortDescending: false})} ><IconSortAscending size={30} /></button>
+            <button className={getSortClass(this.state.sortDescending)} onClick={() => this.sortDescending()} ><IconSortDescending size={30} /></button>
+            <button className={getSortClass(!this.state.sortDescending)} onClick={() => this.sortAscending()} ><IconSortAscending size={30} /></button>
           </div>
           <ComboBox
             label="Sort by"
@@ -138,7 +165,7 @@ class TextGenerationResults extends React.Component<TextGenerationResultsProps, 
             styles={{root: {maxWidth: 160}}}
             selectedKey={this.state.sortByLabel}
             onChange={(evt, option) => {
-              this.sortGeneratedTextResults(option.key);
+              this.sortGeneratedTextResults(option.key, this.state.sortDescending);
             }}
           />
           <ComboBox
