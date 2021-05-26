@@ -1,4 +1,5 @@
 import AnalyzedText from "./models/AnalyzedText";
+import TextRecord from "./models/TextRecord";
 
 const rawInitialState = {
    analysisResults: [],
@@ -20,7 +21,7 @@ function rootReducer(state = initialState, action) {
           return Object.assign({}, state, {loding: false, error: action.error});
 
         case "SET_GENERATED_TEXT_RESULTS":
-          const analysisResults = action.text_generation_results?.map((result) => new AnalyzedText(result));
+          const analysisResults = action.text_generation_results?.map((result) => new TextRecord(result));
           return Object.assign({}, state, {loading: false, analysisResults: analysisResults, error: null});
         
         case "SELECT_TEXT":
@@ -33,6 +34,24 @@ function rootReducer(state = initialState, action) {
           }
           return Object.assign({}, state, {selectedTextIds: textIds});
         
+        case "EDIT_TEXT_SUCCEEDED":
+          const record: TextRecord = state.analysisResults.find(item => item.id === action.id);
+          if (record) {
+            record.edited = new AnalyzedText({...action.analysis, text: action.text, id: action.id});
+          }
+          return Object.assign({}, state, {analysisResults: [...state.analysisResults]});
+        
+        case "EDIT_TEXT_FAILED":
+          console.log(action.error);
+          return Object.assign({}, state, {});
+
+        case "DELETE_EDIT_TEXT":
+          const rec: TextRecord = state.analysisResults.find(item => item.id === action.id);
+          if (rec) {
+            rec.edited = null;
+          }
+          return Object.assign({}, state, {analysisResults: [...state.analysisResults]});
+
         case "FOLD_FORM":
           return Object.assign({}, state, {isFolded: !state.isFolded});
 

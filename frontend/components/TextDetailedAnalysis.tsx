@@ -1,13 +1,14 @@
 import React from "react";
-import * as d3 from "d3";
-import * as _ from "lodash"
-import ReactDOM from "react-dom";
+import TextRecord from "../models/TextRecord";
 import AnalyzedText from "../models/AnalyzedText";
 import PerspectiveScoresSpiderChart from "./PerspectiveScoresSpiderChart";
-import { FiEdit } from "react-icons/fi";
+import tinycolor from "tinycolor2";
+import InteractiveText from "./InteractiveText";
 
 type TextDetailedAnalysisProps = {
-  selectedText: AnalyzedText[],
+  selectedText: TextRecord[],
+  submitEditText: Function,
+  deleteEditText: Function,
 }
 
 class TextDetailedAnalysis extends React.Component<TextDetailedAnalysisProps, null> {
@@ -17,14 +18,36 @@ class TextDetailedAnalysis extends React.Component<TextDetailedAnalysisProps, nu
   }
 
   render() {
-    const tabColors = ["#FD6D22", "#3AA757", "#ED4596", "#752BEE", "#4DBDC5", "#FABB2D", "#3C85FA", "#FF4C4C"];
+
+    const getColor = (i: number) => {
+      const tabColors = ["#FD6D22", "#3AA757", "#ED4596", "#752BEE", "#4DBDC5", "#FABB2D", "#3C85FA", "#FF4C4C"];
+      return tabColors[i % tabColors.length];
+    }
+
+    const getEditColor = (baseColor: string) => {
+      return tinycolor(baseColor).lighten(20).toHexString();
+    }
+
+    const textScores = new Array<AnalyzedText>();
+    const spiderColors = new Array<string>();
+
+    this.props.selectedText.forEach((text, index) => {
+      textScores.push(text.original);
+      const color = getColor(index);
+      spiderColors.push(color);
+
+      if (text.edited) {
+        textScores.push(text.edited);
+        spiderColors.push(getEditColor(color));
+      }
+    });
 
     return (
       <div className="page-column p-3" style={{boxShadow: "0px 0px 12px rgba(0, 0, 0, 0.12)"}}>
         <h1 className="mb-4">Toxicity Analysis</h1>
         <div className="mb-4 text-2xl">
           <PerspectiveScoresSpiderChart
-            scores={this.props.selectedText}
+            scores={textScores}
             axes={[
               ["Toxicity", "toxicity"],
               ["Severe Toxicity", "severeToxicity"],
@@ -35,22 +58,18 @@ class TextDetailedAnalysis extends React.Component<TextDetailedAnalysisProps, nu
               ["Sexually Explicit", "sexuallyExplicit"],
               ["Flirtation", "flirtation"]
             ]}
-            colors={tabColors}
+            colors={spiderColors}
           />
         </div>
-        {this.props.selectedText.map((item, index) => 
-          <div className="flex items-stretch mb-4" style={{minHeight: "110px"}}>
-            <div className="flex items-center justify-center flex-none px-1" style={{backgroundColor: tabColors[index % tabColors.length], color: "white", width: "26px", fontSize: "18px", lineHeight: "20px"}}>
-              {item.id}
-            </div>
-            <div className="flex items-center flex-auto px-4" style={{backgroundColor: "#F3F6FD", fontSize: "18px", lineHeight: "27px"}}>
-              {item.text}
-            </div>
-            <div className="flex items-center justify-center flex-none px-1" style={{backgroundColor: "#E1E6F0", color: "white", width: "42px", fontSize: "18px", lineHeight: "20px"}}>
-              <FiEdit style={{color: "#167DF5"}} size={20}/>
-            </div>
-          </div>
-        )}
+        {this.props.selectedText.map((item, index) => {
+          const color = getColor(index);
+          return <InteractiveText 
+                   textRecord={item} 
+                   tabColor={color} 
+                   editColor={getEditColor(color)}
+                   submitEditText={this.props.submitEditText}
+                   deleteEditText={this.props.deleteEditText} />
+        })}
       </div>
     );
   }

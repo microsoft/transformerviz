@@ -43,6 +43,38 @@ function selectText(id: number) {
   }
 }
 
+function setEditTextResults(id: number, text: string, analysis: any) {
+  return {
+    type: "EDIT_TEXT_SUCCEEDED",
+    id: id,
+    text: text,
+    analysis: analysis
+  }
+
+}
+
+function editTextFailed(error) {
+  return {
+    type: "EDIT_TEXT_FAILED",
+    error: error
+  }
+}
+
+function submitEditText(id: number, text: string) {
+  return function(dispatch) {
+    makePostCall("api/v1/analyze_text", {text: text})
+      .then(response => dispatch(setEditTextResults(id, text, response.data.text_analysis_result)))
+      .catch(error => dispatch(editTextFailed(error)));
+  }
+}
+
+function deleteEditText(id: number) {
+  return {
+    type: "DELETE_EDIT_TEXT",
+    id: id
+  }
+}
+
 
 export {
   requestGenerateText,
@@ -50,5 +82,7 @@ export {
   generateTextFailed,
   generateText,
   selectText,
+  submitEditText,
+  deleteEditText,
   foldForm,
 };

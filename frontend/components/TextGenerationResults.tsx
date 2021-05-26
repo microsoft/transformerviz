@@ -1,11 +1,11 @@
 import React from "react";
 import { ComboBox, Dropdown, IComboBoxOption, IDropdownOption, Stack } from "office-ui-fabric-react"
-import AnalyzedText from "../models/AnalyzedText";
+import TextRecord from "../models/TextRecord";
 import PerspectiveScoresBarChart from "./PerspectiveScoresBarChart";
 import { IconSortDescending, IconSortAscending } from '@tabler/icons';
 
 type TextGenerationResultsProps = {
-  analysisResults: AnalyzedText[],
+  analysisResults: TextRecord[],
   onSelectTextId: Function,
   selectedTextIds: number[],
   loading?: boolean,
@@ -13,7 +13,7 @@ type TextGenerationResultsProps = {
 }
 
 type TextGenerationResultsState = {
-  analysisResults: AnalyzedText[],
+  analysisResults: TextRecord[],
   highlightScoreLabel: string,
   sortByLabel: string,
   sortDescending: boolean,
@@ -66,7 +66,7 @@ class TextGenerationResults extends React.Component<TextGenerationResultsProps, 
       const sortedAnalysisResultsAscending = this.state.analysisResults.map((result) => result).sort((resultA, resultB) => {
         if (resultA[scoreLabel] < resultB[scoreLabel]) {
           return -1;
-        } else if (resultA[scoreLabel] == resultB[scoreLabel]) {
+        } else if (resultA.original[scoreLabel] == resultB.original[scoreLabel]) {
           return 0;
         } else {
           return 1;
@@ -201,14 +201,14 @@ class TextGenerationResults extends React.Component<TextGenerationResultsProps, 
               {item.id}
             </div>
             <div className="flex-none" style={{width: `${chartWidth}px`, border: "5px solid #F3F6FD"}}>
-              <PerspectiveScoresBarChart id={item.id} width={chartWidth} analyzedText={item} defaultSelectedScore={this.state.highlightScoreLabel} />
+              <PerspectiveScoresBarChart id={item.id} width={chartWidth} textRecord={item} defaultSelectedScore={this.state.highlightScoreLabel} />
             </div>
             <button 
               className="flex items-center flex-auto text-left px-4"
               style={{backgroundColor: "#F3F6FD", fontSize: "18px", lineHeight: "27px"}}
               onClick={() => this.props.onSelectTextId(item.id)}
             >
-              {item.text}
+              {item.original.text}
             </button>
           </div>
         )}

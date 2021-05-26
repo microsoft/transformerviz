@@ -3,6 +3,7 @@ import ReactDOM from "react-dom";
 import * as d3 from "d3";
 import { DirectionalHint } from 'office-ui-fabric-react/lib/Tooltip';
 import { PrimaryButton, DefaultButton } from 'office-ui-fabric-react/lib/Button';
+import TextRecord from "../models/TextRecord";
 import AnalyzedText from "../models/AnalyzedText";
 
 
@@ -14,7 +15,7 @@ type PerspectiveScoresBarChartProps = {
   id: number,
   width: number,
   defaultSelectedScore: string,
-  analyzedText: AnalyzedText
+  textRecord: TextRecord
 }
 
 class PerspectiveScoresBarChart extends Component<PerspectiveScoresBarChartProps, PerspectiveScoresBarChartState> {
@@ -58,7 +59,7 @@ class PerspectiveScoresBarChart extends Component<PerspectiveScoresBarChartProps
     var _this = this;
     var body = d3.select(this.node.current);
 
-    const getResultScoreObj: any = (item: any) => {
+    const getResultScoreObj: any = (item: AnalyzedText) => {
       let resultScores = [
         {label: "toxicity", value: item.toxicity, scoreName: "Toxicity"},
         {label: "severeToxicity", value: item.severeToxicity, scoreName: "Severe Toxicity"},
@@ -73,7 +74,7 @@ class PerspectiveScoresBarChart extends Component<PerspectiveScoresBarChartProps
       return resultScores;
     }
 
-    var scores = getResultScoreObj(this.props.analyzedText);
+    var scores = getResultScoreObj(this.props.textRecord.original);
 
     var margin = { top: 5, right: 15, bottom: 50, left: 55 }
     var h = 111 - margin.top - margin.bottom
