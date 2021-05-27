@@ -87,7 +87,7 @@ class PerspectiveScoresBarChart extends Component<PerspectiveScoresBarChartProps
         .attr('width',w)
         .attr('float', 'left');
 
-    var xScale = d3.scaleBand().range([0, w]).padding(0.4),
+    var xScale = d3.scaleBand().range([0, w-10]).padding(0.4),
         yScale = d3.scaleLinear().range([h, 0]);
 
     var g = svg.append("g")
@@ -97,7 +97,7 @@ class PerspectiveScoresBarChart extends Component<PerspectiveScoresBarChartProps
     yScale.domain([0.0, 1.0]);
 
     var selectedScoreObj = scores.filter(scoreObj => (scoreObj.label == this.state.selectedScore))[0];
-    var selectedScoreMessage = `${selectedScoreObj.scoreName}: ${selectedScoreObj.value.toFixed(2)}`;
+    var selectedScoreMessage = `${selectedScoreObj.scoreName}: ${(selectedScoreObj.value*100).toFixed(2)}%`;
 
     g.append("g")
      .attr("transform", "translate(0," + h + ")")
@@ -117,6 +117,15 @@ class PerspectiveScoresBarChart extends Component<PerspectiveScoresBarChartProps
      .attr("y", function(d) { return yScale(d.value); })
      .attr("width", xScale.bandwidth())
      .attr("height", function(d) { return h - yScale(d.value); })
+     .attr("fill-opacity", function(d) { 
+        if (d.value < 0.33) {
+          return ".65";
+        }
+        if (d.value < 0.66) {
+          return ".8";
+        }
+        return "1";
+      })
      .classed("highlighted-bar", function(d) { return d.label == _this.state.selectedScore })
      .on("click", function(d) {
        _this.setSelectedScore(d.label);

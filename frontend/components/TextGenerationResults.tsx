@@ -1,5 +1,5 @@
 import React from "react";
-import { ComboBox, IComboBoxOption, Stack } from "office-ui-fabric-react"
+import { ComboBox, Dropdown, IComboBoxOption, IDropdownOption, Stack } from "office-ui-fabric-react"
 import AnalyzedText from "../models/AnalyzedText";
 import PerspectiveScoresBarChart from "./PerspectiveScoresBarChart";
 import { IconSortDescending, IconSortAscending } from '@tabler/icons';
@@ -120,7 +120,7 @@ class TextGenerationResults extends React.Component<TextGenerationResultsProps, 
       );
     }
 
-    const sortOptions: IComboBoxOption[] = [
+    const sortOptions: IDropdownOption[] = [
       { key: 'none', text: 'None'},
       { key: 'toxicity', text: 'Toxicity' },
       { key: 'severeToxicity', text: 'Severe Toxicity' },
@@ -132,7 +132,7 @@ class TextGenerationResults extends React.Component<TextGenerationResultsProps, 
       { key: 'flirtation', text: 'Flirtation' },
     ];
 
-    const scoreOptions: IComboBoxOption[] = [
+    const scoreOptions: IDropdownOption[] = [
       { key: 'toxicity', text: 'Toxicity' },
       { key: 'severeToxicity', text: 'Severe Toxicity' },
       { key: 'identityAttack', text: 'Identity Attack' },
@@ -151,7 +151,7 @@ class TextGenerationResults extends React.Component<TextGenerationResultsProps, 
       }
     }
 
-    const chartWidth = 140;
+    const chartWidth = 160;
 
     const getAscendingDescendingButtons = () => {
       if (this.state.sortByLabel != "none") {
@@ -172,19 +172,23 @@ class TextGenerationResults extends React.Component<TextGenerationResultsProps, 
         <h1>Generated Results</h1>
         <Stack horizontal horizontalAlign="end" tokens={{childrenGap: 20}} styles={{root: {marginBottom: "16px"}}}>
           {getAscendingDescendingButtons()}
-          <ComboBox
+          <div className="flex items-end">
+            <button className={getSortClass(this.state.sortDescending)} onClick={() => this.sortDescending()} ><IconSortDescending size={30} /></button>
+            <button className={getSortClass(!this.state.sortDescending)} onClick={() => this.sortAscending()} ><IconSortAscending size={30} /></button>
+          </div>
+          <Dropdown
             label="Sort by"
             options={sortOptions}
-            styles={{root: {maxWidth: 160}}}
+            styles={{root: {minWidth: 160}}}
             selectedKey={this.state.sortByLabel}
             onChange={(evt, option) => {
               this.sortGeneratedTextResults(option.key, this.state.sortDescending);
             }}
           />
-          <ComboBox
+          <Dropdown
             label="Show score"
             options={scoreOptions}
-            styles={{root: {maxWidth: 160}}}
+            styles={{root: {minWidth: 160}}}
             selectedKey={this.state.highlightScoreLabel}
             onChange={(evt, option) => {
               this.setHighlightedScoreLabel(option.key);
@@ -196,7 +200,7 @@ class TextGenerationResults extends React.Component<TextGenerationResultsProps, 
             <div className="flex items-center flex-none px-1" style={{backgroundColor: "#8894B1", color: "white", fontSize: "18px", lineHeight: "20px"}}>
               {item.id}
             </div>
-            <div className="flex-none" style={{width: `${chartWidth}px`, border: "solid #E7E7E7 1px"}}>
+            <div className="flex-none" style={{width: `${chartWidth}px`, border: "5px solid #F3F6FD"}}>
               <PerspectiveScoresBarChart id={item.id} width={chartWidth} analyzedText={item} defaultSelectedScore={this.state.highlightScoreLabel} />
             </div>
             <button 
