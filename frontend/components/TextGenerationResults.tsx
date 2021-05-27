@@ -34,7 +34,10 @@ class TextGenerationResults extends React.Component<TextGenerationResultsProps, 
 
   componentWillReceiveProps(nextProps) {
     this.setState({
-      analysisResults: nextProps.analysisResults
+      analysisResults: nextProps.analysisResults,
+      highlightScoreLabel: "toxicity",
+      sortByLabel: "none",
+      sortDescending: true
     });
   }
 
@@ -47,11 +50,11 @@ class TextGenerationResults extends React.Component<TextGenerationResultsProps, 
     } else if (sortDescending) {
       const sortedAnalysisResultsDescending = this.state.analysisResults.map((result) => result).sort((resultA, resultB) => {
         if (resultA[scoreLabel] < resultB[scoreLabel]) {
-          return -1;
+          return 1;
         } else if (resultA[scoreLabel] == resultB[scoreLabel]) {
           return 0;
         } else {
-          return 1;
+          return -1;
         }
       });
 
@@ -62,11 +65,11 @@ class TextGenerationResults extends React.Component<TextGenerationResultsProps, 
     } else if (!sortDescending) {
       const sortedAnalysisResultsAscending = this.state.analysisResults.map((result) => result).sort((resultA, resultB) => {
         if (resultA[scoreLabel] < resultB[scoreLabel]) {
-          return 1;
+          return -1;
         } else if (resultA[scoreLabel] == resultB[scoreLabel]) {
           return 0;
         } else {
-          return -1;
+          return 1;
         }
       });
 
@@ -150,15 +153,25 @@ class TextGenerationResults extends React.Component<TextGenerationResultsProps, 
 
     const chartWidth = 140;
 
+    const getAscendingDescendingButtons = () => {
+      if (this.state.sortByLabel != "none") {
+        return (
+          <div className="flex items-end">
+            <button className={getSortClass(this.state.sortDescending)} onClick={() => this.sortDescending()} ><IconSortDescending size={30} /></button>
+            <button className={getSortClass(!this.state.sortDescending)} onClick={() => this.sortAscending()} ><IconSortAscending size={30} /></button>
+          </div>
+        );
+      }
+
+      return (<React.Fragment />);
+    }
+
     return (
       <div className="page-column">
         <div className="scroll-pane">
         <h1>Generated Results</h1>
         <Stack horizontal horizontalAlign="end" tokens={{childrenGap: 20}} styles={{root: {marginBottom: "16px"}}}>
-          <div className="flex items-end">
-            <button className={getSortClass(this.state.sortDescending)} onClick={() => this.sortDescending()} ><IconSortDescending size={30} /></button>
-            <button className={getSortClass(!this.state.sortDescending)} onClick={() => this.sortAscending()} ><IconSortAscending size={30} /></button>
-          </div>
+          {getAscendingDescendingButtons()}
           <ComboBox
             label="Sort by"
             options={sortOptions}

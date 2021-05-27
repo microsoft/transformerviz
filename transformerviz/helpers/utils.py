@@ -3,6 +3,13 @@ from transformers import (
     AutoModelForCausalLM)
 from torch.nn import functional as F
 from googleapiclient import discovery
+import torch
+
+
+def set_seed(seed):
+    torch.manual_seed(seed)
+    if torch.cuda.is_available():
+        torch.cuda.manual_seed_all(seed)
 
 
 def generate_sentences_hf(tokenizer, model, context,
