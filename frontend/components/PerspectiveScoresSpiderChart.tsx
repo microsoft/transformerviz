@@ -43,9 +43,9 @@ class PerspectiveScoresSpiderChart extends Component<PerspectiveScoresSpiderChar
     var body = d3.select(this.node.current);
 
     var h = 310
-    var w = 450;
+    var w = 500;
     var maxRadius = 125;
-    var centerX = 225;
+    var centerX = 250;
     var centerY = 155;
 
     // SVG
@@ -79,9 +79,9 @@ class PerspectiveScoresSpiderChart extends Component<PerspectiveScoresSpiderChar
 
     const getLabelOffset = (index: number, label: string) => {
       if (index == 1 || index == 2) {
-        return {"x":  -(label.length) * 5, "y": 0.0};
+        return {"x":  -(label.length) * 6, "y": 0.0};
       } else if (index == 3) {
-        return {"x":  -(label.length) * 5, "y": 6};
+        return {"x":  -(label.length) * 5, "y": 10};
       } else if (index == 4) {
         return {"x": -(label.length) * 2, "y": 12};
       } else if (index == 5) {
@@ -113,7 +113,7 @@ class PerspectiveScoresSpiderChart extends Component<PerspectiveScoresSpiderChar
         svg.append("text")
         .attr("x", label_coordinate.x + label_offset.x)
         .attr("y", label_coordinate.y + label_offset.y)
-        .attr("font-size", "12px")
+        .attr("font-size", "14px")
         .text(axisName);
     }
 

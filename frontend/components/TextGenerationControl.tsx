@@ -144,13 +144,19 @@ class TextGenerationControl extends React.Component<
           }}
         >
           <div className="flex items-center">
-            <h1 className="mr-4">Text Generation Prompt</h1>
+            <h1 className="mr-4 flex-none">Text Generation Prompt</h1>
             <TextField
-                className="flex-auto"
+                className="flex-grow mr-4"
                 name="prompt"
                 value={this.state.textGenerationPrompt}
                 onChange={this.onTextPromptChange}
               />
+            <PrimaryButton 
+              className="flex-initial"
+              text="Generate"
+              onClick={this.generateTextClickHandler}
+              styles={{root: {minWidth: "190px", fontSize: "18px", paddingTop: "18px", paddingBottom: "18px"}}}
+            />
           </div>
           <button className="flex items-center justify-center w-full p-1" onClick={() => this.toggleFold()}>
               <FiChevronDown size={25} className="light-gray-text" />
@@ -171,19 +177,20 @@ class TextGenerationControl extends React.Component<
               marginBottom: "30px"
           }}
         >
-          <div className="flex items-end mb-4">
+          <h1 className="mb-4">Text Generation Prompt</h1>
+          <div className="flex items-center mb-4">
             <TextField
-              className="flex-initial w-11/12 mr-4"
-              label="Text Generation Prompt"
+              className="flex-grow mr-4"
               placeholder="Input your prompt"
               name="prompt"
               value={this.state.textGenerationPrompt}
               onChange={this.onTextPromptChange}
             />
             <PrimaryButton 
-              className="flex-auto"
+              className="flex-initial"
               text="Generate"
               onClick={this.generateTextClickHandler}
+              styles={{root: {minWidth: "190px", fontSize: "18px", paddingTop: "18px", paddingBottom: "18px"}}}
             />
           </div>
           <div className="text-gen-form-grid p-4" style={{backgroundColor: "#F3F6FD"}}>
