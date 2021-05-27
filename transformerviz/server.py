@@ -11,6 +11,8 @@ import os
 app = Flask(__name__)
 CORS(app)
 
+utils.set_seed(0)
+
 text_generators = {
     "gpt2": utils.TextGenerator(
         os.environ.get("GPT2_MODEL_VERSION", "gpt2"),
@@ -82,6 +84,7 @@ def generate_text():
     temperature = request_json.get("temperature")
     num_beams = request_json.get("num_beams")
     text_generator = text_generators.get(model_name)
+    utils.set_seed(0)
     generated_sentences = text_generator.generate_text(
         prompt,
         do_sample=do_sample,
