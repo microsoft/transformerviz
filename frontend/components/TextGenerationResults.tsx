@@ -167,7 +167,7 @@ class TextGenerationResults extends React.Component<TextGenerationResultsProps, 
     }
 
     return (
-      <div className="page-column">
+      <div className="page-column p-3">
         <div className="scroll-pane">
         <h1>Generated Results</h1>
         <Stack horizontal horizontalAlign="end" tokens={{childrenGap: 20}} styles={{root: {marginBottom: "16px"}}}>
@@ -196,8 +196,8 @@ class TextGenerationResults extends React.Component<TextGenerationResultsProps, 
           />
         </Stack>
         {this.state.analysisResults.map((item) => 
-          <div className="flex items-stretch mb-4" style={{minHeight: "110px", border: this.props.selectedTextIds.includes(item.id) ? "solid #167DF5 2px" : "none"}}>
-            <div className="flex items-center flex-none px-1" style={{backgroundColor: "#8894B1", color: "white", fontSize: "18px", lineHeight: "20px"}}>
+          <div className="flex items-stretch mb-5" style={{minHeight: "110px", border: this.props.selectedTextIds.includes(item.id) ? "solid #167DF5 2px" : "none"}}>
+            <div className="flex items-center justify-center flex-none px-1" style={{backgroundColor: "#8894B1", color: "white", width: "26px", fontSize: "18px", lineHeight: "20px"}}>
               {item.id}
             </div>
             <div className="flex-none" style={{width: `${chartWidth}px`, border: "5px solid #F3F6FD"}}>

@@ -117,14 +117,14 @@ class PerspectiveScoresBarChart extends Component<PerspectiveScoresBarChartProps
      .attr("y", function(d) { return yScale(d.value); })
      .attr("width", xScale.bandwidth())
      .attr("height", function(d) { return h - yScale(d.value); })
-     .attr("fill-opacity", function(d) { 
+     .attr("fill", function(d) { 
         if (d.value < 0.33) {
-          return ".65";
+          return "#F994A1";
         }
         if (d.value < 0.66) {
-          return ".8";
+          return "#FF374F";
         }
-        return "1";
+        return "#BB061C";
       })
      .classed("highlighted-bar", function(d) { return d.label == _this.state.selectedScore })
      .on("click", function(d) {
