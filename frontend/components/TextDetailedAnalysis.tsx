@@ -11,6 +11,16 @@ type TextDetailedAnalysisProps = {
   deleteEditText: Function,
 }
 
+class TabColor {
+  original: string;
+  edited: string;
+
+  constructor(original: string, edited: string) {
+    this.original = original;
+    this.edited = edited;
+  }
+}
+
 class TextDetailedAnalysis extends React.Component<TextDetailedAnalysisProps, null> {
 
   constructor(props) {
@@ -18,14 +28,15 @@ class TextDetailedAnalysis extends React.Component<TextDetailedAnalysisProps, nu
   }
 
   render() {
+    const tabColors = [
+      new TabColor("#FD6D22", "FABB2D"),
+      new TabColor("#3AA757", "#4DBDC5"),
+      new TabColor("#ED4596", "#FF4C4C"),
+      new TabColor("#752BEE", "#3C85FA")
+    ]
 
     const getColor = (i: number) => {
-      const tabColors = ["#FD6D22", "#3AA757", "#ED4596", "#752BEE", "#4DBDC5", "#FABB2D", "#3C85FA", "#FF4C4C"];
       return tabColors[i % tabColors.length];
-    }
-
-    const getEditColor = (baseColor: string) => {
-      return tinycolor(baseColor).lighten(20).toHexString();
     }
 
     const textScores = new Array<AnalyzedText>();
@@ -34,11 +45,11 @@ class TextDetailedAnalysis extends React.Component<TextDetailedAnalysisProps, nu
     this.props.selectedText.forEach((text, index) => {
       textScores.push(text.original);
       const color = getColor(index);
-      spiderColors.push(color);
+      spiderColors.push(color.original);
 
       if (text.edited) {
         textScores.push(text.edited);
-        spiderColors.push(getEditColor(color));
+        spiderColors.push(color.edited);
       }
     });
 
@@ -65,8 +76,8 @@ class TextDetailedAnalysis extends React.Component<TextDetailedAnalysisProps, nu
           const color = getColor(index);
           return <InteractiveText 
                    textRecord={item} 
-                   tabColor={color} 
-                   editColor={getEditColor(color)}
+                   tabColor={color.original} 
+                   editColor={color.edited}
                    submitEditText={this.props.submitEditText}
                    deleteEditText={this.props.deleteEditText} />
         })}
