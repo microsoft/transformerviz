@@ -7,6 +7,13 @@ function requestGenerateText() {
   }
 }
 
+function requestEditText(id) {
+  return {
+    type: "REQUEST_EDIT_TEXT",
+    id: id
+  }
+}
+
 function setGeneratedTextResults(generateTextResults) {
   return {
     type: "SET_GENERATED_TEXT_RESULTS",
@@ -43,6 +50,40 @@ function selectText(id: number) {
   }
 }
 
+function setEditTextResults(id: number, text: string, analysis: any) {
+  return {
+    type: "EDIT_TEXT_SUCCEEDED",
+    id: id,
+    text: text,
+    analysis: analysis
+  }
+
+}
+
+function editTextFailed(id: number, error) {
+  return {
+    type: "EDIT_TEXT_FAILED",
+    id: id,
+    error: error
+  }
+}
+
+function submitEditText(id: number, text: string) {
+  return function(dispatch) {
+    dispatch(requestEditText(id));
+    makePostCall("api/v1/analyze_text", {text: text})
+      .then(response => dispatch(setEditTextResults(id, text, response.data.text_analysis_result)))
+      .catch(error => dispatch(editTextFailed(id, error)));
+  }
+}
+
+function deleteEditText(id: number) {
+  return {
+    type: "DELETE_EDIT_TEXT",
+    id: id
+  }
+}
+
 
 export {
   requestGenerateText,
@@ -50,5 +91,7 @@ export {
   generateTextFailed,
   generateText,
   selectText,
+  submitEditText,
+  deleteEditText,
   foldForm,
 };

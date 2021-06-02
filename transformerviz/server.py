@@ -106,6 +106,6 @@ def generate_text():
 def analyze_text():
     request_json = request.json
     text = request_json.get("text", "")
-    analyzed_sentence = perspective_api_client.analyze_sentences(text).pop()
+    analyzed_sentence = perspective_api_client.analyze_sentences([text]).pop()
 
     return {"text_analysis_result": analyzed_sentence}

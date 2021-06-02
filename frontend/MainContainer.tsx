@@ -7,15 +7,17 @@ import {
   generateTextFailed,
   generateText,
   selectText,
+  submitEditText,
+  deleteEditText,
   foldForm
 } from './actions';
 import TextGenerationControl from "./components/TextGenerationControl";
 import TextGenerationResults from "./components/TextGenerationResults";
 import TextDetailedAnalysis from "./components/TextDetailedAnalysis";
-import AnalyzedText from "./models/AnalyzedText";
+import TextRecord from "./models/TextRecord";
 
 type ContainerProps = {
-  analysisResults: AnalyzedText[],
+  analysisResults: TextRecord[],
   error: any,
   loading: any,
   isFolded: boolean,
@@ -25,7 +27,9 @@ type ContainerProps = {
   generateTextFailed: any,
   generateText: any
   selectText: Function,
-  foldForm: Function
+  submitEditText: Function,
+  deleteEditText: Function,
+  foldForm: Function,
 }
 
 const Container: React.FunctionComponent<ContainerProps> = ({
@@ -39,6 +43,8 @@ const Container: React.FunctionComponent<ContainerProps> = ({
   generateTextFailed,
   generateText,
   selectText,
+  submitEditText,
+  deleteEditText,
   foldForm
   }) => {
     const getDetailedAnalysisComponent = () => {
@@ -48,7 +54,10 @@ const Container: React.FunctionComponent<ContainerProps> = ({
         const selectedText = selectedTextIds.map(id => analysisResults.find(item => id == item.id))
         return (
           <TextDetailedAnalysis
-            selectedText={selectedText} />
+            selectedText={selectedText} 
+            submitEditText={submitEditText} 
+            deleteEditText={deleteEditText} 
+            />
         );
       }
     }
@@ -95,6 +104,8 @@ function mapDispatchToProps (dispatch) {
     generateTextFailed: generateTextFailed,
     generateText: generateText,
     selectText: selectText,
+    submitEditText: submitEditText,
+    deleteEditText: deleteEditText,
     foldForm: foldForm,
   }, dispatch);
  }
