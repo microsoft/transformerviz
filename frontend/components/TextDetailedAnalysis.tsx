@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
+
 import React from "react";
 import TextRecord from "../models/TextRecord";
 import AnalyzedText from "../models/AnalyzedText";

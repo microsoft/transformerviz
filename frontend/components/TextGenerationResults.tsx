@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
+
 import React from "react";
 import { ComboBox, Dropdown, IComboBoxOption, IDropdownOption, Stack } from "office-ui-fabric-react"
 import TextRecord from "../models/TextRecord";

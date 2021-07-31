@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
+
 import AnalyzedText from "./models/AnalyzedText";
 import TextRecord from "./models/TextRecord";
 
