@@ -1,7 +1,6 @@
-#
 # Copyright (c) Microsoft Corporation.
-# Licensed under the MIT license.
-#
+# Licensed under the MIT License.
+
 import setuptools
 
 
@@ -23,9 +22,9 @@ setuptools.setup(
     name="transformerviz",
 
     version=VERSION,
-    author="Aether Prototyping Team",
-    author_email="aether@microsoft.com",
-    description="Large Language Model Visualizer",
+    author="Aether Prototyping and Incubation sTeam",
+    author_email="aetherpi@microsoft.com",
+    description="Transformer Visualizations",
     long_description=long_description,
     long_description_content_type="text/markdown",
     url="https://github.com/microsoft/transformerviz/",

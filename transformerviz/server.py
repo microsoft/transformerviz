@@ -1,3 +1,6 @@
+# Copyright (c) Microsoft Corporation.
+# Licensed under the MIT License.
+
 import pkg_resources
 from jinja2 import Template
 from flask import (

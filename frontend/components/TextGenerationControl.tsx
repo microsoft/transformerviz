@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
+
 import React, { FunctionComponent } from "react";
 import ReactDOM from "react-dom";
 import { Fabric } from "office-ui-fabric-react/lib/Fabric";
