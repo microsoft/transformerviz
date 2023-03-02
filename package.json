@@ -41,7 +41,7 @@
     "babel-preset-stage-0": "^6.24.1",
     "cross-env": "^7.0.3",
     "css-loader": "^4.3.0",
-    "dns-packet": ">=5.2.2",
+    "dns-packet": ">=5.4.0",
     "html-webpack-plugin": "^4.5.0",
     "jest": "^26.6.0",
     "mini-css-extract-plugin": "^0.12.0",
